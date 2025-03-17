@@ -625,7 +625,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1698273735}
   - component: {fileID: 1698273734}
-  - component: {fileID: 1698273737}
   - component: {fileID: 1698273736}
   m_Layer: 0
   m_Name: Waves
@@ -648,15 +647,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dimension: 20
   UVScale: 10
-  Octaves:
-  - speed: {x: 0.5, y: 0.5}
-    scale: {x: 10, y: 10}
-    height: 0.1
-    alternate: 0
-  - speed: {x: 0, y: 15}
-    scale: {x: 1.31, y: 8.63}
-    height: 1
-    alternate: 0
+  WaveDirection: {x: 1, y: 0}
+  WaveSpeed: 1
+  WaveHeight: 0.2
+  WaveFrequency: 1
+  UsePerlinNoise: 0
+  NoiseScale: 2
+  NoiseHeight: 0.2
 --- !u!4 &1698273735
 Transform:
   m_ObjectHideFlags: 0
@@ -717,21 +714,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1698273737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698273733}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72650bef526917e419348c20fcbc0cab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bigWaveHeight: 1
-  bigWaveRadius: 10
-  waveCooldown: 2
 --- !u!1 &1985241300
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +948,7 @@ Transform:
   m_GameObject: {fileID: 2077823154}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.93, z: 0}
+  m_LocalPosition: {x: 0, y: -0.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -981,14 +963,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2077823154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff30874bd93307046bd4cd427785aa35, type: 3}
+  m_Script: {fileID: 11500000, guid: afd0403c60a948c47a0b1bb56bcd8b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveHeight: 5
-  waveSpeed: 2
-  waveWidth: 3
-  leadingSteepness: 1.5
-  trailingSteepness: 1
+  Dimension: 10
+  UVScale: 3
+  WaveSpeed: 1
+  WaveHeight: 2
+  WaveDuration: 3
+  WaveWidth: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

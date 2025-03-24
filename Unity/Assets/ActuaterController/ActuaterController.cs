@@ -39,7 +39,7 @@ public class ActuatorController : MonoBehaviour
                 float angleDiff = Mathf.DeltaAngle(previousZAngle, currentZAngle);
 
                 // -50〜50 にマッピング（最大180度の時 ±50 になるようにスケーリング）
-                float mappedDiff = Mathf.Clamp(angleDiff / 3.6f, -50f, 50f) * 300;
+                float mappedDiff = Mathf.Clamp(angleDiff / 3.6f, -50f, 50f) * 100;
 
                 // メッセージ送信
                 messageToSend = mappedDiff.ToString("F2");

@@ -2040,15 +2040,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dimension: 20
   UVScale: 10
-  Octaves:
-  - speed: {x: 0.5, y: 0.5}
-    scale: {x: 10, y: 10}
-    height: 0.1
-    alternate: 0
-  - speed: {x: 0, y: 15}
-    scale: {x: 1.31, y: 8.63}
-    height: 1
-    alternate: 0
+  WaveDirection: {x: 1, y: 0}
+  WaveSpeed: 1
+  WaveHeight: 0.5
+  WaveFrequency: 1
+  UsePerlinNoise: 0
+  NoiseScale: 2
+  NoiseHeight: 0.2
 --- !u!4 &1698273735
 Transform:
   m_ObjectHideFlags: 0
@@ -2121,9 +2119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72650bef526917e419348c20fcbc0cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bigWaveHeight: 1
-  bigWaveRadius: 10
-  waveCooldown: 2
 --- !u!1 &1842286659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,6 +2305,55 @@ MonoBehaviour:
     _retargetingLayer: {fileID: 1964602123}
     _allowDynamicAdjustmentsRuntime: 1
     _avatarMask: {fileID: 1094490348}
+--- !u!1 &1894011223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1894011225}
+  - component: {fileID: 1894011224}
+  m_Layer: 0
+  m_Name: ActuatorController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1894011224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894011223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd380541a6294ce1915e3e305c66f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Host: 192.168.16.5
+  Port: 12345
+  targetObject: {fileID: 578737169}
+  messageToSend: -9
+  sendInterval: 0.1
+--- !u!4 &1894011225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894011223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.993166, y: 0.8948425, z: 15.291424}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1910341590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3051,11 +3095,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd0403c60a948c47a0b1bb56bcd8b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveHeight: 5
-  waveSpeed: 2
-  waveWidth: 3
-  leadingSteepness: 1.5
-  trailingSteepness: 1
+  Dimension: 10
+  UVScale: 2
+  WaveSpeed: 5
+  WaveHeight: 1.5
+  WaveDuration: 3
+  WaveWidth: 3
 --- !u!1 &2110323563
 GameObject:
   m_ObjectHideFlags: 0
@@ -3194,3 +3239,4 @@ SceneRoots:
   - {fileID: 2077823158}
   - {fileID: 143758586}
   - {fileID: 1985241304}
+  - {fileID: 1894011225}

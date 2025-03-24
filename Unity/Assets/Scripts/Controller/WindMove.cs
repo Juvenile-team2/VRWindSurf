@@ -1,28 +1,129 @@
 using UnityEngine;
+
 public class WindMove : MonoBehaviour
 {
-    // x軸方向に加える風の力
+    // 風の成分
     [SerializeField]
     private float windX = 0f;
-    // y軸方向に加える風の力
     [SerializeField]
     private float windY = 0f;
-    // z軸方向に加える風の力
     [SerializeField]
     private float windZ = 0f;
-    /// <summary>
-    /// Is Triggerにチェックが入ったコライダーの範囲内に入っている間に繰り返し実行される関数
-    /// </summary>
-    /// <param name="other"></param>
+
+    // 最大揚力係数と抗力係数
+    private float maxLiftCoefficient = 1.2f;
+    private float baseDragCoefficient = 0.05f;
+    private float dragIncreaseRate = 0.1f;
+
+    private float airDensity = 1.225f;
+
     private void OnTriggerStay(Collider other)
     {
-        // 当たった相手のrigidbodyコンポーネントを取得
-        Rigidbody otherRigidbody = other.gameObject.GetComponent<Rigidbody>();
-        // otherRigidbodyがnullではない場合（相手のGameObjectにrigidbodyがついている場合）
-        if (otherRigidbody != null)
+        // 帆（Sail）にぶつかった場合
+        if (other.CompareTag("Sail"))
         {
-            // 相手のrigidbodyに力を加える
-            otherRigidbody.AddForce(windX, windY, windZ, ForceMode.Acceleration);
+            // 親オブジェクト（船）のRigidbodyを取得
+            Rigidbody parentRigidbody = other.transform.root.GetComponent<Rigidbody>();
+
+            // 帆のTransformを取得
+            Transform sailTransform = other.transform;
+
+            if (parentRigidbody != null && sailTransform != null)
+            {
+                // 風の強さと向きを計算
+                float windSpeed = CalculateWindSpeed(windX, windY, windZ);
+                Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+
+                // 帆の向きを取得
+                Vector3 sailDirection = sailTransform.forward;
+
+                // 仰角（風と帆の角度）を計算
+                float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
+
+                // 揚力係数と抗力係数を計算
+                float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
+                //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
+
+                // 揚力と抗力を計算
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
+                //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
+
+                // 推進力を計算
+                Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
+
+                // 親オブジェクト（船）に力を適用
+                parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+            }
         }
+    }
+
+    // 風の強さを計算
+    float CalculateWindSpeed(float windx, float windy, float windz)
+    {
+        return Mathf.Sqrt(windx * windx + windy * windy + windz * windz);
+    }
+
+    // 風の向きを計算
+    Vector3 CalculateWindDirection(float windx, float windy, float windz)
+    {
+        float windSpeed = CalculateWindSpeed(windx, windy, windz);
+        if (windSpeed == 0) return Vector3.zero;
+        return new Vector3(windx / windSpeed, windy / windSpeed, windz / windSpeed);
+    }
+
+    // 仰角を計算（風と帆の角度）
+    float CalculateAngleOfAttack(Vector3 windDirection, Vector3 sailDirection)
+    {
+        return Vector3.Angle(windDirection, sailDirection) * Mathf.Deg2Rad;
+    }
+
+    // 揚力係数を計算
+    float CalculateLiftCoefficient(float angleOfAttack)
+    {
+        return maxLiftCoefficient * Mathf.Sin(2 * angleOfAttack);
+    }
+
+    // 抗力係数を計算
+    float CalculateDragCoefficient(float liftCoefficient)
+    {
+        return baseDragCoefficient + dragIncreaseRate * liftCoefficient * liftCoefficient;
+    }
+
+    // 揚力を計算
+    Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
+    {
+        
+        Vector3 liftDirection = Vector3.Cross(windDirection, sailDirection).normalized; // 風と帆の外積で揚力の方向を決定
+
+        // Y方向の揚力を無視（XZ平面に限定）
+        liftDirection.y = 0;
+        liftDirection = liftDirection.normalized;
+
+        // 揚力の大きさを計算
+        float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
+
+        // 揚力ベクトルを返す
+        return liftForceMagnitude * liftDirection;
+    }
+
+    // 抗力を計算
+    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Rigidbody rigidbody, float dragCoefficient)
+    {
+        float dragForceMagnitude = 0.5f * windSpeed * windSpeed * dragCoefficient * airDensity * rigidbody.mass;
+        Vector3 dragForce = dragForceMagnitude * windDirection; // 風と同じ向き
+
+        // Y方向の抗力を無視（XZ平面に限定）
+        dragForce.y = 0;
+
+        return dragForce;
+    }
+
+    // 推進力を計算
+    Vector3 CalculateThrustForce(Vector3 lift, float angleOfAttack)
+    {
+
+        Vector3 thrustForce = lift * Mathf.Sin(angleOfAttack);
+
+        return thrustForce;
     }
 }

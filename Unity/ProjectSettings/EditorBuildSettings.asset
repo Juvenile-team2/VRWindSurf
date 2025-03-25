@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/zono.unity
+    guid: 7b4dda6c2e25e40feb78205217fe9594
+  - enabled: 1
+    path: Assets/Scenes/zono2.unity
+    guid: 099e813e8a5044fcab94bcfe2d855ef4
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 84935a223df2b46e8b2bfb5d0d667725, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

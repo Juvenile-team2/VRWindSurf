@@ -22,7 +22,7 @@ mc.set_speed(2, 0)
 while True:
     try:
         input_speed = float(input("モーターを動かす秒数を入力（-50~+50）: "))
-        speed = input_speed*16
+        speed = int(input_speed*16)
 
         print("3秒間モーターを動かします！")
 

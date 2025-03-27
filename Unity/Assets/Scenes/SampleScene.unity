@@ -932,7 +932,6 @@ GameObject:
   - component: {fileID: 1985241306}
   - component: {fileID: 1985241305}
   - component: {fileID: 1985241307}
-  - component: {fileID: 1985241308}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1100,21 +1099,6 @@ MonoBehaviour:
   Power: 5
   MaxSpeed: 10
   Drag: 0.1
---- !u!114 &1985241308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985241300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca2322a58dc1bb7439665e9887f65dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 1985241306}
-  sail: {fileID: 1199822727}
-  movementFactor: 5
 --- !u!1 &2002655717
 GameObject:
   m_ObjectHideFlags: 0

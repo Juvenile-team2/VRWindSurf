@@ -17,13 +17,20 @@ public class WindMove : MonoBehaviour
 
     private float airDensity = 1.225f;
 
+    //public Rigidbody rb;
+
+    void Start()
+    {
+        //rb = GetComponent<Rigidbody>();
+    }
+
     private void OnTriggerStay(Collider other)
     {
         // 帆（Sail）にぶつかった場合
         if (other.CompareTag("Sail"))
         {
             // 親オブジェクト（船）のRigidbodyを取得
-            Rigidbody parentRigidbody = other.transform.root.GetComponent<Rigidbody>();
+            Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
 
             // 帆のTransformを取得
             Transform sailTransform = other.transform;
@@ -36,23 +43,29 @@ public class WindMove : MonoBehaviour
 
                 // 帆の向きを取得
                 Vector3 sailDirection = sailTransform.forward;
+                //Debug.Log("帆の向き: " + sailDirection);
 
                 // 仰角（風と帆の角度）を計算
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
+                //Debug.Log("仰角 (radians): " + angleOfAttack);
 
                 // 揚力係数と抗力係数を計算
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
+                //Debug.Log("揚力係数: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
                 // 揚力と抗力を計算
                 Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
+                //Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
                 // 推進力を計算
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
+                Debug.Log("推進力: " + thrustForce);
 
                 // 親オブジェクト（船）に力を適用
                 parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+
             }
         }
     }
@@ -94,6 +107,7 @@ public class WindMove : MonoBehaviour
     {
         
         Vector3 liftDirection = Vector3.Cross(windDirection, sailDirection).normalized; // 風と帆の外積で揚力の方向を決定
+        Debug.Log("風と帆の外積" + liftDirection);
 
         // Y方向の揚力を無視（XZ平面に限定）
         liftDirection.y = 0;

@@ -1,0 +1,129 @@
+using UnityEngine;
+
+public class WindMove : MonoBehaviour
+{
+    // •—‚Ì¬•ª
+    [SerializeField]
+    private float windX = 0f;
+    [SerializeField]
+    private float windY = 0f;
+    [SerializeField]
+    private float windZ = 0f;
+
+    // Å‘å—g—ÍŒW”‚ÆR—ÍŒW”
+    private float maxLiftCoefficient = 1.2f;
+    private float baseDragCoefficient = 0.05f;
+    private float dragIncreaseRate = 0.1f;
+
+    private float airDensity = 1.225f;
+
+    private void OnTriggerStay(Collider other)
+    {
+        // ”¿iSailj‚É‚Ô‚Â‚©‚Á‚½ê‡
+        if (other.CompareTag("Sail"))
+        {
+            // eƒIƒuƒWƒFƒNƒgi‘Dj‚ÌRigidbody‚ğæ“¾
+            Rigidbody parentRigidbody = other.transform.root.GetComponent<Rigidbody>();
+
+            // ”¿‚ÌTransform‚ğæ“¾
+            Transform sailTransform = other.transform;
+
+            if (parentRigidbody != null && sailTransform != null)
+            {
+                // •—‚Ì‹­‚³‚ÆŒü‚«‚ğŒvZ
+                float windSpeed = CalculateWindSpeed(windX, windY, windZ);
+                Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+
+                // ”¿‚ÌŒü‚«‚ğæ“¾
+                Vector3 sailDirection = sailTransform.forward;
+
+                // ‹ÂŠpi•—‚Æ”¿‚ÌŠp“xj‚ğŒvZ
+                float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
+
+                // —g—ÍŒW”‚ÆR—ÍŒW”‚ğŒvZ
+                float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
+                //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
+
+                // —g—Í‚ÆR—Í‚ğŒvZ
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
+                //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
+
+                // „i—Í‚ğŒvZ
+                Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
+
+                // eƒIƒuƒWƒFƒNƒgi‘Dj‚É—Í‚ğ“K—p
+                parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+            }
+        }
+    }
+
+    // •—‚Ì‹­‚³‚ğŒvZ
+    float CalculateWindSpeed(float windx, float windy, float windz)
+    {
+        return Mathf.Sqrt(windx * windx + windy * windy + windz * windz);
+    }
+
+    // •—‚ÌŒü‚«‚ğŒvZ
+    Vector3 CalculateWindDirection(float windx, float windy, float windz)
+    {
+        float windSpeed = CalculateWindSpeed(windx, windy, windz);
+        if (windSpeed == 0) return Vector3.zero;
+        return new Vector3(windx / windSpeed, windy / windSpeed, windz / windSpeed);
+    }
+
+    // ‹ÂŠp‚ğŒvZi•—‚Æ”¿‚ÌŠp“xj
+    float CalculateAngleOfAttack(Vector3 windDirection, Vector3 sailDirection)
+    {
+        return Vector3.Angle(windDirection, sailDirection) * Mathf.Deg2Rad;
+    }
+
+    // —g—ÍŒW”‚ğŒvZ
+    float CalculateLiftCoefficient(float angleOfAttack)
+    {
+        return maxLiftCoefficient * Mathf.Sin(2 * angleOfAttack);
+    }
+
+    // R—ÍŒW”‚ğŒvZ
+    float CalculateDragCoefficient(float liftCoefficient)
+    {
+        return baseDragCoefficient + dragIncreaseRate * liftCoefficient * liftCoefficient;
+    }
+
+    // —g—Í‚ğŒvZ
+    Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
+    {
+        
+        Vector3 liftDirection = Vector3.Cross(windDirection, sailDirection).normalized; // •—‚Æ”¿‚ÌŠOÏ‚Å—g—Í‚Ì•ûŒü‚ğŒˆ’è
+
+        // Y•ûŒü‚Ì—g—Í‚ğ–³‹iXZ•½–Ê‚ÉŒÀ’èj
+        liftDirection.y = 0;
+        liftDirection = liftDirection.normalized;
+
+        // —g—Í‚Ì‘å‚«‚³‚ğŒvZ
+        float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
+
+        // —g—ÍƒxƒNƒgƒ‹‚ğ•Ô‚·
+        return liftForceMagnitude * liftDirection;
+    }
+
+    // R—Í‚ğŒvZ
+    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Rigidbody rigidbody, float dragCoefficient)
+    {
+        float dragForceMagnitude = 0.5f * windSpeed * windSpeed * dragCoefficient * airDensity * rigidbody.mass;
+        Vector3 dragForce = dragForceMagnitude * windDirection; // •—‚Æ“¯‚¶Œü‚«
+
+        // Y•ûŒü‚ÌR—Í‚ğ–³‹iXZ•½–Ê‚ÉŒÀ’èj
+        dragForce.y = 0;
+
+        return dragForce;
+    }
+
+    // „i—Í‚ğŒvZ
+    Vector3 CalculateThrustForce(Vector3 lift, float angleOfAttack)
+    {
+
+        Vector3 thrustForce = lift * Mathf.Sin(angleOfAttack);
+
+        return thrustForce;
+    }
+}

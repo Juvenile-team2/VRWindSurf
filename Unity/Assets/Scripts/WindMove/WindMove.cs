@@ -40,14 +40,15 @@ public class WindMove : MonoBehaviour
                 // 風の強さと向きを計算
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
                 Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+                //Debug.Log("風の向き" + windDirection);
 
-                // 帆の向きを取得
-                Vector3 sailDirection = sailTransform.forward;
-                //Debug.Log("帆の向き: " + sailDirection);
+                // x軸の座標から、帆の向きを取得 
+                Vector3 sailDirection = sailTransform.right;
+                Debug.Log("帆の向き: " + sailDirection);
 
                 // 仰角（風と帆の角度）を計算
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
-                //Debug.Log("仰角 (radians): " + angleOfAttack);
+                Debug.Log("仰角 (radians): " + angleOfAttack);
 
                 // 揚力係数と抗力係数を計算
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
@@ -61,7 +62,7 @@ public class WindMove : MonoBehaviour
 
                 // 推進力を計算
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
-                Debug.Log("推進力: " + thrustForce);
+                //Debug.Log("推進力: " + thrustForce);
 
                 // 親オブジェクト（船）に力を適用
                 parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
@@ -105,19 +106,20 @@ public class WindMove : MonoBehaviour
     // 揚力を計算
     Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
     {
-        
-        Vector3 liftDirection = Vector3.Cross(windDirection, sailDirection).normalized; // 風と帆の外積で揚力の方向を決定
+
+        // 帆の方向に対して垂直な揚力の方向を計算
+        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+
         Debug.Log("風と帆の外積" + liftDirection);
 
         // Y方向の揚力を無視（XZ平面に限定）
         liftDirection.y = 0;
-        liftDirection = liftDirection.normalized;
 
         // 揚力の大きさを計算
         float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
 
         // 揚力ベクトルを返す
-        return liftForceMagnitude * liftDirection;
+        return liftForceMagnitude * -liftDirection;
     }
 
     // 抗力を計算

@@ -1,0 +1,5 @@
+C:/VRSurf/Unity/.utmp/RelWithDebInfo/40l6922e/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/VRSurf/Unity/.utmp/RelWithDebInfo/40l6922e/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/VRSurf/Unity/.utmp/RelWithDebInfo/40l6922e/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/VRSurf/Unity/.utmp/RelWithDebInfo/40l6922e/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/VRSurf/Unity/.utmp/RelWithDebInfo/40l6922e/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

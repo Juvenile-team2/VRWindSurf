@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class SplashEffect : MonoBehaviour
 {
-    public ParticleSystem splashParticle;  // …‚µ‚Ô‚«‚Ìƒp[ƒeƒBƒNƒ‹
+    public ParticleSystem splashParticle;  // ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Ìƒpï¿½[ï¿½eï¿½Bï¿½Nï¿½ï¿½
     public Rigidbody BoardRigidbody;
 
-    private float minSpeedThreshold = 1.0f; // …‚µ‚Ô‚«‚ð”­¶‚³‚¹‚éÅ¬‘¬“x
+    private float minSpeedThreshold = 1.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½ð”­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½ï¿½x
 
     void Update()
     {
-        // ‘¬“x‚ðƒ`ƒFƒbƒN
-        float BoardSpeed = BoardRigidbody.velocity.magnitude;
+        // ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
+        float BoardSpeed = BoardRigidbody.linearVelocity.magnitude;
 
-        // ‘¬“x‚ª‚µ‚«‚¢’l‚ð’´‚¦‚½‚çƒp[ƒeƒBƒNƒ‹‚ð—LŒø‚É‚·‚é
+        // ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ð’´‚ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½[ï¿½eï¿½Bï¿½Nï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
         if (BoardSpeed > minSpeedThreshold)
         {
             if (!splashParticle.isPlaying)

@@ -5,22 +5,20 @@ using UnityEngine;
 
 public class Waves : MonoBehaviour
 {
-    // Public Properties
     public int Dimension = 10;
     public float UVScale = 2f;
 
     [Header("Wave Settings")]
-    public Vector2 WaveDirection = new Vector2(1, 0);  // デフォルトは右方向
-    public float WaveSpeed = 1.0f;                    // 波の速度
-    public float WaveHeight = 0.5f;                   // 波の高さ
-    public float WaveFrequency = 1.0f;                // 波の周波数（波の密度）
+    public float baseAmplitude = 0.5f;
+    public float baseFrequency = 1.0f;
+    public float baseSpeed = 1.0f;
 
-    [Header("Additional Wave Settings")]
-    public bool UsePerlinNoise = false;               // パーリンノイズを使用するか
-    public float NoiseScale = 2.0f;                   // ノイズのスケール
-    public float NoiseHeight = 0.2f;                  // ノイズの高さ
+    [Header("Noise Settings")]
+    public float noiseScale = 1.0f;
+    public float noiseSpeed = 0.5f;
+    public float noiseAmplitude = 0.3f;
+    public Vector2 noiseDirection = new Vector2(1f, 1f);
 
-    // Mesh
     protected MeshFilter MeshFilter;
     protected Mesh Mesh;
 
@@ -38,16 +36,6 @@ public class Waves : MonoBehaviour
 
         MeshFilter = gameObject.AddComponent<MeshFilter>();
         MeshFilter.mesh = Mesh;
-
-        // 波の方向を正規化
-        if (WaveDirection != Vector2.zero)
-        {
-            WaveDirection.Normalize();
-        }
-        else
-        {
-            WaveDirection = Vector2.right; // デフォルト方向
-        }
     }
 
     public float GetHeight(Vector3 position)
@@ -157,35 +145,24 @@ public class Waves : MonoBehaviour
     {
         var verts = Mesh.vertices;
 
+        float timeOffset = Time.time * baseSpeed;
+        float noiseTimeOffset = Time.time * noiseSpeed;
+
         for (int x = 0; x <= Dimension; x++)
         {
             for (int z = 0; z <= Dimension; z++)
             {
-                float y = 0f;
+                // 基本の正弦波
+                float baseWave = baseAmplitude * Mathf.Sin(
+                    (x * baseFrequency + timeOffset) * Mathf.PI / Dimension
+                );
 
-                // 方向に基づいた波の計算
-                // 波の方向に沿って進行する位置を計算
-                float directionValue = x * WaveDirection.x + z * WaveDirection.y;
+                // パーリンノイズによる変調
+                float noiseX = (x + noiseTimeOffset * noiseDirection.x) * noiseScale / Dimension;
+                float noiseZ = (z + noiseTimeOffset * noiseDirection.y) * noiseScale / Dimension;
+                float noise = Mathf.PerlinNoise(noiseX, noiseZ) * 2f - 1f;
 
-                // 時間とともに進行する波
-                float timeOffset = Time.time * WaveSpeed;
-                float waveValue = Mathf.Sin((directionValue - timeOffset) * WaveFrequency) * WaveHeight;
-
-                y += waveValue;
-
-                // パーリンノイズによる自然な見た目の追加（オプション）
-                if (UsePerlinNoise)
-                {
-                    float xCoord = x * NoiseScale / Dimension;
-                    float zCoord = z * NoiseScale / Dimension;
-
-                    // ノイズを時間とともに流れるように
-                    xCoord += Time.time * WaveSpeed * WaveDirection.x * 0.1f;
-                    zCoord += Time.time * WaveSpeed * WaveDirection.y * 0.1f;
-
-                    float noise = Mathf.PerlinNoise(xCoord, zCoord) * 2 - 1;
-                    y += noise * NoiseHeight;
-                }
+                float y = baseWave + (noise * noiseAmplitude);
 
                 verts[index(x, z)] = new Vector3(x, y, z);
             }

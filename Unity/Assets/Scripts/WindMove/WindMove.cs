@@ -17,25 +17,24 @@ public class WindMove : MonoBehaviour
 
     private float airDensity = 1.225f;
 
-    //public Rigidbody rb;
+    //船のrigitbody
+    public Rigidbody rb;
 
-    void Start()
-    {
-        //rb = GetComponent<Rigidbody>();
-    }
+    //boardのtransform
+    public Transform boardtf;
 
     private void OnTriggerStay(Collider other)
     {
         // ???iSail?j????????????????
         if (other.CompareTag("Sail"))
         {
-            // ?e?I?u?W?F?N?g?i?D?j??Rigidbody??????
-            Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
+            // オブジェクトのRigidbodyを取得
+            //Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
 
             // ????Transform??????
             Transform sailTransform = other.transform;
 
-            if (parentRigidbody != null && sailTransform != null)
+            if (rb != null && sailTransform != null)
             {
                 // ?????????????????v?Z
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
@@ -55,17 +54,23 @@ public class WindMove : MonoBehaviour
                 //Debug.Log("?g???W??: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
-                // ?g?????R?????v?Z
-                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
-                //Debug.Log("?g??: " + liftForce);
+                Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
+
+                // 揚力と抗力を計算
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
+                //Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
                 // ???i?????v?Z
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
                 //Debug.Log("???i??: " + thrustForce);
 
-                // ?e?I?u?W?F?N?g?i?D?j???????K?p
-                parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+                //ボードの向きを修正
+                Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
+                boardtf.rotation = newRotation;
+
+                // 親オブジェクト（船）に力を適用
+                rb.AddForce(thrustForce, ForceMode.Acceleration);
 
             }
         }
@@ -103,16 +108,25 @@ public class WindMove : MonoBehaviour
         return baseDragCoefficient + dragIncreaseRate * liftCoefficient * liftCoefficient;
     }
 
-    // ?g?????v?Z
+    Vector3 CalculateLiftdirection(Vector3 windDirecction, Vector3 sailDirection)
+    {
+
+        // 帆の方向に対して垂直な揚力の方向を計算
+        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+
+        // Y方向の揚力を無視（XZ平面に限定）
+        liftDirection.y = 0;
+
+        return liftDirection;
+    }
+
+    // 揚力を計算
     Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
     {
 
         // ???????????????????????g???????????v?Z
         Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
-
-        //Debug.Log("?????????O??" + liftDirection);
-
-        // Y???????g?????????iXZ???????????j
+        // Y方向の揚力を無視（XZ平面に限定）
         liftDirection.y = 0;
 
         // ?g?????????????v?Z

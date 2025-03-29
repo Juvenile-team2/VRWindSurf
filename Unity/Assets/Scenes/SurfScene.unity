@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.5585173, g: 0.660894, b: 0.7264151, a: 1}
+  m_FogColor: {r: 0.6580189, g: 0.7957438, b: 0.8773585, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -48219,7 +48219,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1698273735}
   - component: {fileID: 1698273734}
-  - component: {fileID: 1698273737}
   - component: {fileID: 1698273736}
   m_Layer: 0
   m_Name: Waves
@@ -48309,18 +48308,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1698273737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698273733}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72650bef526917e419348c20fcbc0cab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1702235784
 PrefabInstance:
   m_ObjectHideFlags: 0

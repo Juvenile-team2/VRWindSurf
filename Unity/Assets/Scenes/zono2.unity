@@ -570,6 +570,7 @@ MonoBehaviour:
   windY: 0
   windZ: 0
   rb: {fileID: 1635619312}
+  boardtf: {fileID: 2109504715}
 --- !u!4 &210553500
 Transform:
   m_ObjectHideFlags: 0
@@ -8571,6 +8572,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1298139707}
   m_SourcePrefab: {fileID: 100100000, guid: 755b4b64949ef4ff4b2ca12fae818773, type: 3}
+--- !u!4 &2109504715 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4637455126743142332, guid: a5ab9c3cd1baf30448103d97afe3f394, type: 3}
+  m_PrefabInstance: {fileID: 325919501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2110323563
 GameObject:
   m_ObjectHideFlags: 0

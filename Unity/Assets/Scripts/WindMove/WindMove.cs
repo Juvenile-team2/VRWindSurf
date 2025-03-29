@@ -17,7 +17,7 @@ public class WindMove : MonoBehaviour
 
     private float airDensity = 1.225f;
 
-    //public Rigidbody rb;
+    public Rigidbody rb;
 
     void Start()
     {
@@ -29,13 +29,13 @@ public class WindMove : MonoBehaviour
         // 帆（Sail）にぶつかった場合
         if (other.CompareTag("Sail"))
         {
-            // 親オブジェクト（船）のRigidbodyを取得
-            Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
+            // オブジェクトのRigidbodyを取得
+            //Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
 
             // 帆のTransformを取得
             Transform sailTransform = other.transform;
 
-            if (parentRigidbody != null && sailTransform != null)
+            if (rb != null && sailTransform != null)
             {
                 // 風の強さと向きを計算
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
@@ -56,7 +56,7 @@ public class WindMove : MonoBehaviour
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
                 // 揚力と抗力を計算
-                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
                 //Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
@@ -65,7 +65,7 @@ public class WindMove : MonoBehaviour
                 //Debug.Log("推進力: " + thrustForce);
 
                 // 親オブジェクト（船）に力を適用
-                parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+                rb.AddForce(thrustForce, ForceMode.Acceleration);
 
             }
         }

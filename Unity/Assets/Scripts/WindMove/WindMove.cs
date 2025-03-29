@@ -17,25 +17,24 @@ public class WindMove : MonoBehaviour
 
     private float airDensity = 1.225f;
 
-    //public Rigidbody rb;
+    //船のrigitbody
+    public Rigidbody rb;
 
-    void Start()
-    {
-        //rb = GetComponent<Rigidbody>();
-    }
+    //boardのtransform
+    public Transform boardtf;
 
     private void OnTriggerStay(Collider other)
     {
         // 帆（Sail）にぶつかった場合
         if (other.CompareTag("Sail"))
         {
-            // 親オブジェクト（船）のRigidbodyを取得
-            Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
+            // オブジェクトのRigidbodyを取得
+            //Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
 
             // 帆のTransformを取得
             Transform sailTransform = other.transform;
 
-            if (parentRigidbody != null && sailTransform != null)
+            if (rb != null && sailTransform != null)
             {
                 // 風の強さと向きを計算
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
@@ -55,8 +54,10 @@ public class WindMove : MonoBehaviour
                 //Debug.Log("揚力係数: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
+                Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
+
                 // 揚力と抗力を計算
-                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, parentRigidbody, liftCoefficient);
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
                 //Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
@@ -64,8 +65,12 @@ public class WindMove : MonoBehaviour
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
                 //Debug.Log("推進力: " + thrustForce);
 
+                //ボードの向きを修正
+                Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
+                boardtf.rotation = newRotation;
+
                 // 親オブジェクト（船）に力を適用
-                parentRigidbody.AddForce(thrustForce, ForceMode.Acceleration);
+                rb.AddForce(thrustForce, ForceMode.Acceleration);
 
             }
         }
@@ -103,14 +108,24 @@ public class WindMove : MonoBehaviour
         return baseDragCoefficient + dragIncreaseRate * liftCoefficient * liftCoefficient;
     }
 
+    Vector3 CalculateLiftdirection(Vector3 windDirecction, Vector3 sailDirection)
+    {
+
+        // 帆の方向に対して垂直な揚力の方向を計算
+        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+
+        // Y方向の揚力を無視（XZ平面に限定）
+        liftDirection.y = 0;
+
+        return liftDirection;
+    }
+
     // 揚力を計算
     Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
     {
 
         // 帆の方向に対して垂直な揚力の方向を計算
         Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
-
-        Debug.Log("風と帆の外積" + liftDirection);
 
         // Y方向の揚力を無視（XZ平面に限定）
         liftDirection.y = 0;

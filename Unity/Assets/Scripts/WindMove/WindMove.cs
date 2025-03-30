@@ -182,11 +182,26 @@ public class WindMove : MonoBehaviour
         while (true)
         {
             // ランダムに風のX,Z成分を変更
-            windX = UnityEngine.Random.Range(-5f, 5f); // -10から10の範囲でランダム
-            windZ = UnityEngine.Random.Range(-5f, 5f); // -10から10の範囲でランダム
+            windX = GetRandomWindComponent();
+            windZ = GetRandomWindComponent();
 
             // 1分待つ
             yield return new WaitForSeconds(windChangeInterval);
+        }
+    }
+
+    float GetRandomWindComponent()
+    {
+        // 0～1のランダム値を生成して、範囲を選択
+        if (UnityEngine.Random.value < 0.5f)
+        {
+            // -5～-1の範囲で値を取得
+            return UnityEngine.Random.Range(-5f, -1f);
+        }
+        else
+        {
+            // 1～5の範囲で値を取得
+            return UnityEngine.Random.Range(1f, 5f);
         }
     }
 }

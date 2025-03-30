@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class WindMove : MonoBehaviour
 {
@@ -22,6 +23,15 @@ public class WindMove : MonoBehaviour
 
     //boardのtransform
     public Transform boardtf;
+
+    //風の向きが変わる周期
+    public float windChangeInterval = 60f;
+
+    private void Start()
+    {
+        // 風の向きを1分ごとに変更するコルーチンを開始
+        StartCoroutine(ChangeWindDirection());
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -165,5 +175,18 @@ public class WindMove : MonoBehaviour
     public float GetWindSpeed()
     {
         return CalculateWindSpeed(windX, windY, windZ);
+    }
+
+    private IEnumerator ChangeWindDirection()
+    {
+        while (true)
+        {
+            // ランダムに風のX,Z成分を変更
+            windX = UnityEngine.Random.Range(-5f, 5f); // -10から10の範囲でランダム
+            windZ = UnityEngine.Random.Range(-5f, 5f); // -10から10の範囲でランダム
+
+            // 1分待つ
+            yield return new WaitForSeconds(windChangeInterval);
+        }
     }
 }

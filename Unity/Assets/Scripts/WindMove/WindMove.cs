@@ -39,35 +39,35 @@ public class WindMove : MonoBehaviour
                 // ?????????????????v?Z
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
                 Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
-                //Debug.Log("????????" + windDirection);
+                Debug.Log("windDirection" + windDirection);
 
                 // x???????W?????A?????????????? 
                 Vector3 sailDirection = sailTransform.right;
-                //Debug.Log("????????: " + sailDirection);
+                Debug.Log("sailDirection: " + sailDirection);
 
                 // ???p?i?????????p?x?j???v?Z
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
-                //Debug.Log("???p (radians): " + angleOfAttack);
+                Debug.Log("???p (radians): " + angleOfAttack);
 
                 // ?g???W?????R???W?????v?Z
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
-                //Debug.Log("?g???W??: " + liftCoefficient);
+                Debug.Log("?g???W??: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
                 Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
 
                 // 揚力と抗力を計算
                 Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
-                //Debug.Log("揚力: " + liftForce);
+                Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
                 // ???i?????v?Z
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
-                //Debug.Log("???i??: " + thrustForce);
+                Debug.Log("???i??: " + thrustForce);
 
-                //ボードの向きを修正
-                Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
-                boardtf.rotation = newRotation;
+                ////ボードの向きを修正
+                //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
+                //boardtf.rotation = newRotation;
 
                 // 親オブジェクト（船）に力を適用
                 rb.AddForce(thrustForce, ForceMode.Acceleration);

@@ -23,11 +23,11 @@ HOST = '0.0.0.0'  # サーバーのIPアドレス
 PORT = 12345  # ポート番号
 
 # ソケットの作成とバインド
-while True:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((HOST, PORT))
-    s.listen(1)
 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+while True:
     print("Waiting for a connection...")
 
     connection, client_address = s.accept()

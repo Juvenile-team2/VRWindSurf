@@ -15,7 +15,7 @@ mc.set_max_acceleration(2, 800)
 mc.set_max_deceleration(2, 800)
 
 # 速度の最大値を設定
-max_speed = 800  # モーターの最大速度
+max_speed = 1000  # モーターの最大速度
 interval = 0.1  # 送信間隔
 
 # サーバーの設定

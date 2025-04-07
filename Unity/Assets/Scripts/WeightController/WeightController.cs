@@ -90,4 +90,16 @@ public class WeightController : MonoBehaviour
             Debug.Log("Socket closed.");
         }
     }
+
+    public float GetLatestValue(float maxSensorValue)
+    {
+        if(float.TryParse(theReader.ReadLine(), out float value))
+        {
+            return Mathf.Clamp(value, 0.0f, maxSensorValue);
+        }
+        else
+        {
+            return 0.0f;
+        }
+    }
 }

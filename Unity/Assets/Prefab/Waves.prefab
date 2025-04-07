@@ -47,13 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dimension: 200
   UVScale: 10
-  WaveDirection: {x: 1, y: 0}
-  WaveSpeed: 1
-  WaveHeight: 0.5
-  WaveFrequency: 0.5
-  UsePerlinNoise: 0
-  NoiseScale: 2
-  NoiseHeight: 0.2
+  baseAmplitude: 2
+  baseFrequency: 1
+  baseSpeed: 1
+  noiseScale: 12
+  noiseSpeed: 1
+  noiseAmplitude: 3
+  noiseDirection: {x: 1, y: 3}
 --- !u!23 &4699194721502592822
 MeshRenderer:
   m_ObjectHideFlags: 0

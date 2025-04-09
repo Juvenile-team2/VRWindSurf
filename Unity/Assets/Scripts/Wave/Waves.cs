@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Waves : MonoBehaviour
@@ -19,11 +16,19 @@ public class Waves : MonoBehaviour
     public float noiseAmplitude = 0.3f;
     public Vector2 noiseDirection = new Vector2(1f, 1f);
 
+    [Header("Wave Growth Settings")]
+    public float growthDuration = 10f;
+    public float maxAmplitudeMultiplier = 2f;
+
+    private float startTime;
+    private float currentAmplitudeMultiplier = 1f;
     protected MeshFilter MeshFilter;
     protected Mesh Mesh;
 
     void Start()
     {
+        startTime = Time.time;
+
         // Mesh Setup
         Mesh = new Mesh();
         Mesh.name = gameObject.name;
@@ -40,47 +45,45 @@ public class Waves : MonoBehaviour
 
     public float GetHeight(Vector3 position)
     {
-        // scale factor and position in local space
-        var scale = new Vector3(1 / transform.lossyScale.x, 0, 1 / transform.lossyScale.z);
-        var localPos = Vector3.Scale((position - transform.position), scale);
+        Vector3 localPos = transform.InverseTransformPoint(position);
 
-        // get edge points
-        var p1 = new Vector3(Mathf.Floor(localPos.x), 0, Mathf.Floor(localPos.z));
-        var p2 = new Vector3(Mathf.Floor(localPos.x), 0, Mathf.Ceil(localPos.z));
-        var p3 = new Vector3(Mathf.Ceil(localPos.x), 0, Mathf.Floor(localPos.z));
-        var p4 = new Vector3(Mathf.Ceil(localPos.x), 0, Mathf.Ceil(localPos.z));
+        float x = localPos.x;
+        float z = localPos.z;
 
-        // clamp if the position is outside the plane
-        p1.x = Mathf.Clamp(p1.x, 0, Dimension);
-        p1.z = Mathf.Clamp(p1.z, 0, Dimension);
-        p2.x = Mathf.Clamp(p2.x, 0, Dimension);
-        p2.z = Mathf.Clamp(p2.z, 0, Dimension);
-        p3.x = Mathf.Clamp(p3.x, 0, Dimension);
-        p3.z = Mathf.Clamp(p3.z, 0, Dimension);
-        p4.x = Mathf.Clamp(p4.x, 0, Dimension);
-        p4.z = Mathf.Clamp(p4.z, 0, Dimension);
+        // グリッド座標の計算
+        int x1 = Mathf.FloorToInt(x);
+        int x2 = x1 + 1;
+        int z1 = Mathf.FloorToInt(z);
+        int z2 = z1 + 1;
 
-        // get the max distance to one of the edges and take that to compute max - dist
-        var max = Mathf.Max(Vector3.Distance(p1, localPos), Vector3.Distance(p2, localPos), Vector3.Distance(p3, localPos), Vector3.Distance(p4, localPos) + Mathf.Epsilon);
-        var dist = (max - Vector3.Distance(p1, localPos))
-                 + (max - Vector3.Distance(p2, localPos))
-                 + (max - Vector3.Distance(p3, localPos))
-                 + (max - Vector3.Distance(p4, localPos) + Mathf.Epsilon);
-        // weighted sum
-        var height = Mesh.vertices[index(p1.x, p1.z)].y * (max - Vector3.Distance(p1, localPos))
-                   + Mesh.vertices[index(p2.x, p2.z)].y * (max - Vector3.Distance(p2, localPos))
-                   + Mesh.vertices[index(p3.x, p3.z)].y * (max - Vector3.Distance(p3, localPos))
-                   + Mesh.vertices[index(p4.x, p4.z)].y * (max - Vector3.Distance(p4, localPos));
+        // 範囲内に制限
+        x1 = Mathf.Clamp(x1, 0, Dimension);
+        x2 = Mathf.Clamp(x2, 0, Dimension);
+        z1 = Mathf.Clamp(z1, 0, Dimension);
+        z2 = Mathf.Clamp(z2, 0, Dimension);
 
-        // scale
-        return height * transform.lossyScale.y / dist;
+        // 補間用の重み計算
+        float tx = x - x1;
+        float tz = z - z1;
+
+        // 4つの頂点の高さを取得
+        float h11 = Mesh.vertices[index(x1, z1)].y;
+        float h12 = Mesh.vertices[index(x1, z2)].y;
+        float h21 = Mesh.vertices[index(x2, z1)].y;
+        float h22 = Mesh.vertices[index(x2, z2)].y;
+
+        // バイリニア補間
+        float h1 = Mathf.Lerp(h11, h12, tz);
+        float h2 = Mathf.Lerp(h21, h22, tz);
+        float height = Mathf.Lerp(h1, h2, tx);
+
+        return transform.position.y + height * transform.lossyScale.y;
     }
 
     private Vector3[] GenerateVerts()
     {
         var verts = new Vector3[(Dimension + 1) * (Dimension + 1)];
 
-        // equally distributed verts
         for (int x = 0; x <= Dimension; x++)
             for (int z = 0; z <= Dimension; z++)
                 verts[index(x, z)] = new Vector3(x, 0, z);
@@ -92,7 +95,6 @@ public class Waves : MonoBehaviour
     {
         var tries = new int[Mesh.vertices.Length * 6];
 
-        // two triangles are one tile
         for (int x = 0; x < Dimension; x++)
         {
             for (int z = 0; z < Dimension; z++)
@@ -113,7 +115,6 @@ public class Waves : MonoBehaviour
     {
         var uvs = new Vector2[Mesh.vertices.Length];
 
-        // always set one uv over n tiles than flip the uv and set it again
         for (int x = 0; x <= Dimension; x++)
         {
             for (int z = 0; z <= Dimension; z++)
@@ -144,27 +145,33 @@ public class Waves : MonoBehaviour
     private void UpdateMesh()
     {
         var verts = Mesh.vertices;
-
         float timeOffset = Time.time * baseSpeed;
         float noiseTimeOffset = Time.time * noiseSpeed;
+
+        // 成長係数の更新
+        float timeSinceStart = Time.time - startTime;
+        float growthProgress = Mathf.Clamp01(timeSinceStart / growthDuration);
+        currentAmplitudeMultiplier = Mathf.Lerp(1f, maxAmplitudeMultiplier, growthProgress);
 
         for (int x = 0; x <= Dimension; x++)
         {
             for (int z = 0; z <= Dimension; z++)
             {
-                // 基本の正弦波
-                float baseWave = baseAmplitude * Mathf.Sin(
-                    (x * baseFrequency + timeOffset) * Mathf.PI / Dimension
-                );
+                // z座標に基づく振幅の調整係数
+                float amplitudeScale = z / (float)Dimension;
 
-                // パーリンノイズによる変調
+                // 基本の正弦波
+                float baseWave = (baseAmplitude * amplitudeScale * currentAmplitudeMultiplier) *
+                    Mathf.Sin((x * baseFrequency + timeOffset) * Mathf.PI / Dimension);
+
+                // パーリンノイズ
                 float noiseX = (x + noiseTimeOffset * noiseDirection.x) * noiseScale / Dimension;
                 float noiseZ = (z + noiseTimeOffset * noiseDirection.y) * noiseScale / Dimension;
-                float noise = Mathf.PerlinNoise(noiseX, noiseZ) * 2f - 1f;
+                float noise = (Mathf.PerlinNoise(noiseX, noiseZ) * 2f - 1f) *
+                    noiseAmplitude * amplitudeScale * currentAmplitudeMultiplier;
 
-                float y = baseWave + (noise * noiseAmplitude);
-
-                verts[index(x, z)] = new Vector3(x, y, z);
+                // 最終的な高さを設定
+                verts[index(x, z)] = new Vector3(x, baseWave + noise, z);
             }
         }
 

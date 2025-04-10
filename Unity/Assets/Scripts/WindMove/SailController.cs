@@ -3,7 +3,7 @@ using UnityEngine;
 public class SailController : MonoBehaviour
 {
     public float rotationSpeed = 50f; // ‰ñ“]‘¬“x
-    private float currentRotation = 0f; // Œ»İ‚Ì”¿‚Ì‰ñ“]Šp“x
+    [SerializeField] private float currentRotation = 0f; // Œ»İ‚Ì”¿‚Ì‰ñ“]Šp“x
 
     public GameObject pivot;
 

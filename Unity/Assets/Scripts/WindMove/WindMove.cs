@@ -24,6 +24,7 @@ public class WindMove : MonoBehaviour
     //boardのtransform
     public Transform boardtf;
 
+
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
 
@@ -44,6 +45,9 @@ public class WindMove : MonoBehaviour
             // ????Transform??????
             Transform sailTransform = other.transform;
 
+            //帆の向きの修正
+            //Quaternion rotated = Quaternion.Euler(90f, 0f, 0f) * sailTransform.rotation;
+
             if (rb != null && sailTransform != null)
             {
                 // ?????????????????v?Z
@@ -51,8 +55,19 @@ public class WindMove : MonoBehaviour
                 Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
                 Debug.Log("windDirection" + windDirection);
 
+                Vector3 sailDirection;
+
                 // x???????W?????A?????????????? 
-                Vector3 sailDirection = sailTransform.right;
+                if (sailTransform.rotation.y < 0f)
+                {
+                    sailDirection = sailTransform.right;
+                }
+                else
+                {
+                    sailDirection = -sailTransform.right;
+                }
+
+                //Vector3 sailDirection = rotated * Vector3.right;
                 Debug.Log("sailDirection: " + sailDirection);
 
                 // ???p?i?????????p?x?j???v?Z
@@ -100,7 +115,7 @@ public class WindMove : MonoBehaviour
         return new Vector3(windx / windSpeed, windy / windSpeed, windz / windSpeed);
     }
 
-    // ???p???v?Z?i?????????p?x?j
+    // 風と帆の向きの仰角
     float CalculateAngleOfAttack(Vector3 windDirection, Vector3 sailDirection)
     {
         return Vector3.Angle(windDirection, sailDirection) * Mathf.Deg2Rad;
@@ -134,16 +149,17 @@ public class WindMove : MonoBehaviour
     Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
     {
 
-        // ???????????????????????g???????????v?Z
-        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+        // 揚力の向き
+        //Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
         // Y方向の揚力を無視（XZ平面に限定）
-        liftDirection.y = 0;
+        //liftDirection.y = 0;
 
         // ?g?????????????v?Z
         float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
 
         // ?g???x?N?g????????
-        return liftForceMagnitude * -liftDirection;
+        //return liftForceMagnitude * -liftDirection;
+        return liftForceMagnitude * sailDirection;
     }
 
     // ?R?????v?Z

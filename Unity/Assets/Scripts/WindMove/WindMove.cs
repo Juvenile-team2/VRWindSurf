@@ -28,10 +28,16 @@ public class WindMove : MonoBehaviour
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
 
+    public bool windRandomSwitch = true;
+
     private void Start()
     {
-        // 風の向きを1分ごとに変更するコルーチンを開始
-        StartCoroutine(ChangeWindDirection());
+        if (windRandomSwitch)
+        {
+            // 風の向きを1分ごとに変更するコルーチンを開始
+            StartCoroutine(ChangeWindDirection());
+        }
+        
     }
 
     private void OnTriggerStay(Collider other)

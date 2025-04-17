@@ -1,0 +1,2 @@
+C:\Users\pingp\VRWindSurf\VRWindSurf\Unity\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\pingp\VRWindSurf\VRWindSurf\Unity\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

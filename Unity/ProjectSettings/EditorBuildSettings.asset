@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TutorialScenes/WaveTutorial.unity
     guid: 37324622a753f634bad90df367829921
   - enabled: 1
-    path: Assets/Scenes/WatingScene.unity
+    path: Assets/Scenes/WaitingScene.unity
     guid: ffa0b7c4ab3215f42b042c4bf2d9c199
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 84935a223df2b46e8b2bfb5d0d667725, type: 2}

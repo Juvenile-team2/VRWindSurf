@@ -14,6 +14,9 @@ public class WeightController : MonoBehaviour
     private Thread receiveThread;
     private string receivedMessage = ""; // 受信したメッセージを格納する
 
+    private float latestValue = 0.0f;
+    private object lockObject = new object();
+
     public string Host = "192.168.16.3"; // サーバーのIP
     public int Port = 12346; // サーバーのポート番号
 
@@ -53,6 +56,13 @@ public class WeightController : MonoBehaviour
                 string message = theReader.ReadLine(); // 1行ずつ受信
                 if (!string.IsNullOrEmpty(message))
                 {
+                    if (float.TryParse(message, out float value))
+                    {
+                        lock (lockObject)
+                        {
+                            latestValue = value;
+                        }
+                    }
                     receivedMessage = message; // 受信データを格納
                     Debug.Log("Received: " + message);
                 }
@@ -91,7 +101,7 @@ public class WeightController : MonoBehaviour
         }
     }
 
-    public float GetLatestValue()
+/*    public float GetLatestValue()
     {
         if (float.TryParse(theReader.ReadLine(), out float value))
         {
@@ -101,6 +111,14 @@ public class WeightController : MonoBehaviour
         else
         {
             return 0.0f;
+        }
+    }*/
+
+    public float GetLatestValue()
+    {
+        lock (lockObject)
+        {
+            return latestValue;
         }
     }
 }

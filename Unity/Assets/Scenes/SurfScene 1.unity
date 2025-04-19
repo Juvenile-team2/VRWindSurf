@@ -23802,11 +23802,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790890526322585076, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
       propertyPath: Host
-      value: 192.168.16.4
+      value: 192.168.16.6
       objectReference: {fileID: 0}
     - target: {fileID: 5790890526322585076, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5790890526322585076, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
       propertyPath: sendInterval
@@ -23859,8 +23859,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2478315690784098566, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5442639222619601529}
   m_SourcePrefab: {fileID: 100100000, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
+--- !u!1 &5442639222619601528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2478315690784098566, guid: 8cbb67ab5fdce41428641f5cb78443d4, type: 3}
+  m_PrefabInstance: {fileID: 5442639222619601527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5442639222619601529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5442639222619601528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd380541a6294ce1915e3e305c66f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Host: 192.168.16.9
+  Port: 12345
+  targetObject: {fileID: 1985241300}
+  messageToSend: 0
+  sendInterval: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

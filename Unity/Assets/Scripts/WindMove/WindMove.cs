@@ -59,7 +59,6 @@ public class WindMove : MonoBehaviour
                 // ?????????????????v?Z
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
                 Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
-                Debug.Log("windDirection" + windDirection);
 
                 Vector3 sailDirection;
 
@@ -74,27 +73,22 @@ public class WindMove : MonoBehaviour
                 }
 
                 //Vector3 sailDirection = rotated * Vector3.right;
-                Debug.Log("sailDirection: " + sailDirection);
 
                 // ???p?i?????????p?x?j???v?Z
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
-                Debug.Log("???p (radians): " + angleOfAttack);
 
                 // ?g???W?????R???W?????v?Z
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
-                Debug.Log("?g???W??: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
                 Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
 
                 // 揚力と抗力を計算
                 Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
-                Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
                 // ???i?????v?Z
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
-                Debug.Log("???i??: " + thrustForce);
 
                 ////ボードの向きを修正
                 //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);

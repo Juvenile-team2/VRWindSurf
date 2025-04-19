@@ -59,8 +59,8 @@ public class NewSailController : MonoBehaviour
             {
                 float sensorValue = weightController.GetLatestValue();
 
-                float normalized = Mathf.Clamp01(sensorValue / maxSensorValue);
-                float angle = (normalized - 0.5f) * 2f * maxSailAngle;
+                float normalized = Mathf.Clamp(sensorValue / maxSensorValue,-1,1);
+                float angle = normalized * maxSailAngle;
 
                 sailTransform.localRotation = Quaternion.Euler(-90f, 0f, angle);
             }

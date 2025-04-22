@@ -24,13 +24,20 @@ public class WindMove : MonoBehaviour
     //boardのtransform
     public Transform boardtf;
 
+
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
 
+    public bool windRandomSwitch = true;
+
     private void Start()
     {
-        // 風の向きを1分ごとに変更するコルーチンを開始
-        StartCoroutine(ChangeWindDirection());
+        if (windRandomSwitch)
+        {
+            // 風の向きを1分ごとに変更するコルーチンを開始
+            StartCoroutine(ChangeWindDirection());
+        }
+        
     }
 
     private void OnTriggerStay(Collider other)
@@ -44,36 +51,44 @@ public class WindMove : MonoBehaviour
             // ????Transform??????
             Transform sailTransform = other.transform;
 
+            //帆の向きの修正
+            //Quaternion rotated = Quaternion.Euler(90f, 0f, 0f) * sailTransform.rotation;
+
             if (rb != null && sailTransform != null)
             {
                 // ?????????????????v?Z
                 float windSpeed = CalculateWindSpeed(windX, windY, windZ);
                 Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
-                Debug.Log("windDirection" + windDirection);
+
+                Vector3 sailDirection;
 
                 // x???????W?????A?????????????? 
-                Vector3 sailDirection = sailTransform.right;
-                Debug.Log("sailDirection: " + sailDirection);
+                if (sailTransform.rotation.y < 0f)
+                {
+                    sailDirection = sailTransform.right;
+                }
+                else
+                {
+                    sailDirection = -sailTransform.right;
+                }
+
+                //Vector3 sailDirection = rotated * Vector3.right;
 
                 // ???p?i?????????p?x?j???v?Z
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
-                Debug.Log("???p (radians): " + angleOfAttack);
 
                 // ?g???W?????R???W?????v?Z
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
-                Debug.Log("?g???W??: " + liftCoefficient);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
 
                 Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
 
                 // 揚力と抗力を計算
                 Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
-                Debug.Log("揚力: " + liftForce);
                 //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
 
                 // ???i?????v?Z
                 Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
-                Debug.Log("???i??: " + thrustForce);
 
                 ////ボードの向きを修正
                 //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
@@ -100,7 +115,7 @@ public class WindMove : MonoBehaviour
         return new Vector3(windx / windSpeed, windy / windSpeed, windz / windSpeed);
     }
 
-    // ???p???v?Z?i?????????p?x?j
+    // 風と帆の向きの仰角
     float CalculateAngleOfAttack(Vector3 windDirection, Vector3 sailDirection)
     {
         return Vector3.Angle(windDirection, sailDirection) * Mathf.Deg2Rad;
@@ -134,16 +149,17 @@ public class WindMove : MonoBehaviour
     Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
     {
 
-        // ???????????????????????g???????????v?Z
-        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+        // 揚力の向き
+        //Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
         // Y方向の揚力を無視（XZ平面に限定）
-        liftDirection.y = 0;
+        //liftDirection.y = 0;
 
         // ?g?????????????v?Z
         float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
 
         // ?g???x?N?g????????
-        return liftForceMagnitude * -liftDirection;
+        //return liftForceMagnitude * -liftDirection;
+        return liftForceMagnitude * sailDirection;
     }
 
     // ?R?????v?Z

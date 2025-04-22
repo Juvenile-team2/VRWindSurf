@@ -12,10 +12,13 @@ public class WeightController : MonoBehaviour
     private StreamReader theReader;
     private bool socketReady = false;
     private Thread receiveThread;
-    private string receivedMessage = ""; // å—ä¿¡ã—ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æ ¼ç´ã™ã‚‹
+    private string receivedMessage = ""; // óM‚µ‚½ƒƒbƒZ[ƒW‚ğŠi”[‚·‚é
 
-    public string Host = "192.168.16.3"; // ã‚µãƒ¼ãƒãƒ¼ã®IP
-    public int Port = 12346; // ã‚µãƒ¼ãƒãƒ¼ã®ãƒãƒ¼ãƒˆç•ªå·
+    private float latestValue = 0.0f;
+    private object lockObject = new object();
+
+    public string Host = "192.168.16.3"; // ƒT[ƒo[‚ÌIP
+    public int Port = 12346; // ƒT[ƒo[‚Ìƒ|[ƒg”Ô†
 
     void Start()
     {
@@ -33,7 +36,7 @@ public class WeightController : MonoBehaviour
 
             Debug.Log("Socket connected. Waiting for messages...");
 
-            // å—ä¿¡å°‚ç”¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ä½œæˆã—ã¦é–‹å§‹
+            // óMê—pƒXƒŒƒbƒh‚ğì¬‚µ‚ÄŠJn
             receiveThread = new Thread(ReceiveData);
             receiveThread.IsBackground = true;
             receiveThread.Start();
@@ -50,10 +53,17 @@ public class WeightController : MonoBehaviour
         {
             while (socketReady)
             {
-                string message = theReader.ReadLine(); // 1è¡Œãšã¤å—ä¿¡
+                string message = theReader.ReadLine(); // 1s‚¸‚ÂóM
                 if (!string.IsNullOrEmpty(message))
                 {
-                    receivedMessage = message; // å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´
+                    if (float.TryParse(message, out float value))
+                    {
+                        lock (lockObject)
+                        {
+                            latestValue = value;
+                        }
+                    }
+                    receivedMessage = message; // óMƒf[ƒ^‚ğŠi”[
                     Debug.Log("Received: " + message);
                 }
             }
@@ -69,7 +79,7 @@ public class WeightController : MonoBehaviour
         if (!string.IsNullOrEmpty(receivedMessage))
         {
             Debug.Log("Processing message in Update(): " + receivedMessage);
-            receivedMessage = ""; // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒªã‚»ãƒƒãƒˆ
+            receivedMessage = ""; // ƒƒbƒZ[ƒW‚ğƒŠƒZƒbƒg
         }
     }
 
@@ -91,15 +101,24 @@ public class WeightController : MonoBehaviour
         }
     }
 
-    public float GetLatestValue(float maxSensorValue)
+/*    public float GetLatestValue()
     {
-        if(float.TryParse(theReader.ReadLine(), out float value))
+        if (float.TryParse(theReader.ReadLine(), out float value))
         {
-            return Mathf.Clamp(value, 0.0f, maxSensorValue);
+            //return Mathf.Clamp(value, 0.0f, maxSensorValue);
+            return value;
         }
         else
         {
             return 0.0f;
+        }
+    }*/
+
+    public float GetLatestValue()
+    {
+        lock (lockObject)
+        {
+            return latestValue;
         }
     }
 }

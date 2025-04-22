@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5c0e2c2906e832146ab36a0230a056dd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 4042
+  packageName: SkySphere Volume 1
+  packageVersion: 1.0
+  assetPath: Assets/SkySphere_V1/Examples/Gui.cs
+  uploadId: 27828

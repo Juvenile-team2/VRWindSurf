@@ -16,6 +16,7 @@ public class WindMove : MonoBehaviour
     private float baseDragCoefficient = 0.05f;
     private float dragIncreaseRate = 0.1f;
 
+    [SerializeField]
     private float airDensity = 1.225f;
 
     //船のrigitbody

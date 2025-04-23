@@ -14,7 +14,7 @@ public class NewSailController : MonoBehaviour
     //[SerializeField] private float minSailAngle = -45f;
     [SerializeField] private float maxSailAngle = 45f;
 
-    [SerializeField] private float maxSensorValue = 6000f;
+    [SerializeField] private float maxSensorValue = 1000f;
 
 
 

@@ -14,7 +14,7 @@ public class ResetScene@: MonoBehaviour
 
             if (pressTime >= REQUIRED_PRESS_TIME)
             {
-                SceneManager.LoadScene("SurfScene 1");
+                SceneManager.LoadScene("WaitingScene");
             }
         }
         else

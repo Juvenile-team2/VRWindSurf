@@ -2296,6 +2296,10 @@ PrefabInstance:
       propertyPath: m_AllowDynamicResolution
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5910835360292427049, guid: 2daf41ebe4e054b2e93d289d18bb47df, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6090125224659959536, guid: 2daf41ebe4e054b2e93d289d18bb47df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.007815661

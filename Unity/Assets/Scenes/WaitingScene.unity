@@ -23938,6 +23938,26 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1753576532}
+    - target: {fileID: 1583984579226543300, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583984579226543300, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4371711323311983608, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
+    - target: {fileID: 4371711323311983608, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -592708043989699680, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
+    - target: {fileID: 4977203801424478366, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 62235dd6b93a2ad458e1b5033d06b314, type: 3}
     - target: {fileID: 5566676823818230438, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -24018,9 +24038,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6831274042541306738, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
+    - target: {fileID: 6831274042541306738, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -592708043989699680, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
     - target: {fileID: 6990066715324570544, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
       propertyPath: m_Name
       value: WaitSceneCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6990066715324570544, guid: ad9290b856c5c1c48903772bd33c1578, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

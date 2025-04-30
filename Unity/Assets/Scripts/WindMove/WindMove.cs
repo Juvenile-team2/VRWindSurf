@@ -25,6 +25,14 @@ public class WindMove : MonoBehaviour
     //boardのtransform
     public Transform boardtf;
 
+    [SerializeField]
+    private WindMoveController controller;
+
+    private Vector3 wind = Vector3.zero;
+
+    [SerializeField]
+    private bool isWeb = true;
+
 
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
@@ -50,6 +58,7 @@ public class WindMove : MonoBehaviour
             //Rigidbody parentRigidbody = other.transform.GetComponent<Rigidbody>();
 
             // ????Transform??????
+
             Transform sailTransform = other.transform;
 
             //帆の向きの修正
@@ -58,8 +67,12 @@ public class WindMove : MonoBehaviour
             if (rb != null && sailTransform != null)
             {
                 // ?????????????????v?Z
-                float windSpeed = CalculateWindSpeed(windX, windY, windZ);
-                Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+                wind = controller.GetLatestValue();
+                float windSpeed = CalculateWindSpeed(wind.x, wind.y, wind.z);
+                Vector3 windDirection = CalculateWindDirection(wind.x, wind.y, wind.z);
+
+                //float windSpeed = CalculateWindSpeed(windX, windY, windZ);
+                //Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
 
                 Vector3 sailDirection;
 
@@ -199,8 +212,11 @@ public class WindMove : MonoBehaviour
         while (true)
         {
             // ランダムに風のX,Z成分を変更
-            windX = GetRandomWindComponent();
-            windZ = GetRandomWindComponent();
+            if (!isWeb)
+            {
+                windX = GetRandomWindComponent();
+                windZ = GetRandomWindComponent();
+            }
 
             // 1分待つ
             yield return new WaitForSeconds(windChangeInterval);

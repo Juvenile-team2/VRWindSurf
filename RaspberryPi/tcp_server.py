@@ -42,8 +42,8 @@ def handle_client(conn, addr):
                 client_b = connected_clients.get("ClientB")
                 if client_b:
                     try:
-                        msg = json.dumps({"x": 5, "y": 0, "z": 0}).encode()
-                        client_b.sendall(msg)
+                        vector_str = "(1, 2, 3)\n"  # Unity側と互換性のある形式
+                        client_b.sendall(vector_str.encode())
                         print("Sent to ClientB:", msg)
                     except Exception as send_err:
                         print("Failed to send to ClientB:", send_err)

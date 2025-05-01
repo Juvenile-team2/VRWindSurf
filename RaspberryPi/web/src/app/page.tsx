@@ -1,31 +1,64 @@
-// app/page.tsx
 'use client'
 
-import { useState } from 'react'
-
 export default function Home() {
-  const [status, setStatus] = useState('')
-
-  const handleClick = async () => {
-    setStatus('送信中...')
-    const res = await fetch('/api/send-command', { method: 'POST' })
-
-    if (res.ok) {
-      setStatus('送信成功')
-    } else {
-      setStatus('送信失敗')
-    }
+  const handleClick = async (id: string) => {
+    await fetch(`/api/send-command?id=${id}`, { method: 'POST' })
   }
 
   return (
-      <main className="p-4">
-        <button
-            onClick={handleClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          実行コマンド送信
-        </button>
-        <p className="mt-2">{status}</p>
-      </main>
+    <main className="w-screen h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-blue-200">
+        <div className="grid grid-cols-7 grid-rows-7 w-full max-w-screen-md h-full max-h-screen-md gap-2 p-4">
+
+          {/* 扇風機１：上中央 */}
+          <div className="col-start-3 col-end-6 row-start-1 row-end-3 flex justify-center items-center">
+            <button
+              onClick={() => handleClick('1')}
+              className="rounded-3xl backdrop-blur-md bg-white/50 hover:bg-white/60 p-4 shadow-md transition"
+            >
+              <img
+                src="/electric_fan.png"
+                alt="扇風機1"
+                className="w-20 h-20 object-contain filter opacity-50"
+              />
+            </button>
+          </div>
+
+          {/* 扇風機２：左中央 */}
+          <div className="col-start-1 col-end-4 row-start-5 row-end-7 flex justify-center items-center">
+            <button
+              onClick={() => handleClick('2')}
+              className="rounded-3xl backdrop-blur-md bg-white/50 hover:bg-white/60 p-4 shadow-md transition"
+            >
+              <img
+                src="/electric_fan.png"
+                alt="扇風機2"
+                className="w-20 h-20 object-contain filter opacity-50"
+              />
+            </button>
+          </div>
+
+          {/* 扇風機３：右中央 */}
+          <div className="col-start-5 col-end-8 row-start-5 row-end-7 flex justify-center items-center">
+            <button
+              onClick={() => handleClick('3')}
+              className="rounded-3xl backdrop-blur-md bg-white/50 hover:bg-white/60 p-4 shadow-md transition"
+            >
+              <img
+                src="/electric_fan.png"
+                alt="扇風機3"
+                className="w-20 h-20 object-contain filter opacity-50"
+              />
+            </button>
+          </div>
+
+          {/* 中央のボード */}
+          <div className="col-start-3 col-end-6 row-start-2 row-end-6 flex justify-center items-center">
+            <div
+              className="rounded-full bg-gradient-to-br from-gray-400 to-gray-600 text-white font-semibold shadow-lg flex justify-center items-center w-24 h-48">
+              Board
+            </div>
+          </div>
+        </div>
+    </main>
   )
 }

@@ -25,6 +25,9 @@ public class WindMove : MonoBehaviour
     //boardのtransform
     public Transform boardtf;
 
+    //矢印のtransform
+    public Transform arrowtf;
+    
     [SerializeField]
     private WindMoveController controller;
 
@@ -32,7 +35,6 @@ public class WindMove : MonoBehaviour
 
     [SerializeField]
     private bool isWeb = true;
-
 
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
@@ -107,6 +109,12 @@ public class WindMove : MonoBehaviour
                 ////ボードの向きを修正
                 //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
                 //boardtf.rotation = newRotation;
+
+                Quaternion lookRotation = Quaternion.LookRotation(thrustForce.normalized);
+
+                Quaternion correction = Quaternion.Euler(180, 90, 90);
+
+                arrowtf.rotation = lookRotation * correction;
 
                 // 親オブジェクト（船）に力を適用
                 rb.AddForce(thrustForce, ForceMode.Acceleration);

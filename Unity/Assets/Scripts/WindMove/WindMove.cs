@@ -75,13 +75,22 @@ public class WindMove : MonoBehaviour
 
             if (rb != null && sailTransform != null)
             {
-                // ?????????????????v?Z
-                //wind = controller.GetLatestValue();
-                //float windSpeed = CalculateWindSpeed(wind.x, wind.y, wind.z);
-                //Vector3 windDirection = CalculateWindDirection(wind.x, wind.y, wind.z);
 
-                float windSpeed = CalculateWindSpeed(windX, windY, windZ);
-                Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+                float windSpeed;
+                Vector3 windDirection;
+
+                if (isWeb)
+                {
+                    // ?????????????????v?Z
+                    wind = controller.GetLatestValue();
+                    windSpeed = CalculateWindSpeed(wind.x, wind.y, wind.z);
+                    windDirection = CalculateWindDirection(wind.x, wind.y, wind.z);
+                }
+                else
+                {
+                    windSpeed = CalculateWindSpeed(windX, windY, windZ);
+                    windDirection = CalculateWindDirection(windX, windY, windZ);
+                }
 
                 Vector3 sailDirection;
 

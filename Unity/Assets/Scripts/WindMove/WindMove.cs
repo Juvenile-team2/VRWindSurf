@@ -11,6 +11,13 @@ public class WindMove : MonoBehaviour
     [SerializeField]
     private float windZ = 0f;
 
+    [SerializeField]
+    private float arrowX = 0f;
+    [SerializeField]
+    private float arrowY = 0f;
+    [SerializeField]
+    private float arrowZ = 0f;
+
     // ?????g???W?????R???W??
     private float maxLiftCoefficient = 1.2f;
     private float baseDragCoefficient = 0.05f;
@@ -25,6 +32,9 @@ public class WindMove : MonoBehaviour
     //boardのtransform
     public Transform boardtf;
 
+    //矢印のtransform
+    public Transform arrowtf;
+    
     [SerializeField]
     private WindMoveController controller;
 
@@ -32,7 +42,6 @@ public class WindMove : MonoBehaviour
 
     [SerializeField]
     private bool isWeb = true;
-
 
     //風の向きが変わる周期
     public float windChangeInterval = 60f;
@@ -43,7 +52,7 @@ public class WindMove : MonoBehaviour
     {
         if (windRandomSwitch)
         {
-            // 風の向きを1分ごとに変更するコルーチンを開始
+            // 風の強さと向きを1分ごとに変更するコルーチンを開始
             StartCoroutine(ChangeWindDirection());
         }
         
@@ -66,13 +75,22 @@ public class WindMove : MonoBehaviour
 
             if (rb != null && sailTransform != null)
             {
-                // ?????????????????v?Z
-                wind = controller.GetLatestValue();
-                float windSpeed = CalculateWindSpeed(wind.x, wind.y, wind.z);
-                Vector3 windDirection = CalculateWindDirection(wind.x, wind.y, wind.z);
 
-                //float windSpeed = CalculateWindSpeed(windX, windY, windZ);
-                //Vector3 windDirection = CalculateWindDirection(windX, windY, windZ);
+                float windSpeed;
+                Vector3 windDirection;
+
+                if (isWeb)
+                {
+                    // ?????????????????v?Z
+                    wind = controller.GetLatestValue();
+                    windSpeed = CalculateWindSpeed(wind.x, wind.y, wind.z);
+                    windDirection = CalculateWindDirection(wind.x, wind.y, wind.z);
+                }
+                else
+                {
+                    windSpeed = CalculateWindSpeed(windX, windY, windZ);
+                    windDirection = CalculateWindDirection(windX, windY, windZ);
+                }
 
                 Vector3 sailDirection;
 
@@ -107,6 +125,12 @@ public class WindMove : MonoBehaviour
                 ////ボードの向きを修正
                 //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
                 //boardtf.rotation = newRotation;
+
+                Quaternion lookRotation = Quaternion.LookRotation(thrustForce.normalized);
+
+                Quaternion correction = Quaternion.Euler(arrowX, arrowY, arrowZ);
+
+                arrowtf.rotation = lookRotation * correction;
 
                 // 親オブジェクト（船）に力を適用
                 rb.AddForce(thrustForce, ForceMode.Acceleration);
@@ -154,7 +178,7 @@ public class WindMove : MonoBehaviour
         Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
 
         // Y方向の揚力を無視（XZ平面に限定）
-        liftDirection.y = 0;
+        //liftDirection.y = 0;
 
         return liftDirection;
     }

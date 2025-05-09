@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Please  Wait......
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6f7be4d9ffa799b43b008a6dbc48cf61, type: 2}
-  m_sharedMaterial: {fileID: -1614663620562701489, guid: 6f7be4d9ffa799b43b008a6dbc48cf61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
+  m_sharedMaterial: {fileID: -592708043989699680, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -203,8 +203,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6f7be4d9ffa799b43b008a6dbc48cf61, type: 2}
-  m_sharedMaterial: {fileID: -1614663620562701489, guid: 6f7be4d9ffa799b43b008a6dbc48cf61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
+  m_sharedMaterial: {fileID: -592708043989699680, guid: d9888521b553fd540aa33f1a59a3d181, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -299,7 +299,7 @@ RectTransform:
   m_GameObject: {fileID: 2346870482789591259}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.52, y: 1.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5566676823818230438}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 62235dd6b93a2ad458e1b5033d06b314, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -373,7 +373,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6990066715324570544}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 9.7}
   m_LocalScale: {x: 0.01418551, y: 0.01418551, z: 0.01418551}
   m_ConstrainProportionsScale: 0

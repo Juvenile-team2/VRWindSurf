@@ -43,9 +43,9 @@ public class TutrialManager : MonoBehaviour
 
         if (textComponent != null)
         {
-            yield return StartCoroutine(ChangeTextWithFade("ハンドルで帆を左右に動かしましょう！"));
+            yield return StartCoroutine(ChangeTextWithFade("ハンドルで" + "\n帆を左右に動かしましょう！"));
             yield return new WaitForSeconds(5f);
-            yield return StartCoroutine(ChangeTextWithFade("帆の向きで進む向きが変わります")) ;
+            yield return StartCoroutine(ChangeTextWithFade("帆の向きで" + "\n進む向きが変わります")) ;
         }
         else
         {

@@ -4313,10 +4313,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400012, guid: b94f8f8da47ae2a4c81242eb6b7d3536, type: 3}
   m_PrefabInstance: {fileID: 1078039573}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1090205868 stripped
+--- !u!1 &1091293165 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: -6707465309446565082, guid: 236b1a01d34f3604c80108590ff592a2, type: 3}
-  m_PrefabInstance: {fileID: 318585437}
+  m_CorrespondingSourceObject: {fileID: 8652903217423752852, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
+  m_PrefabInstance: {fileID: 344369612}
+
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1091818113 stripped
 Transform:
@@ -5908,6 +5909,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 431444, guid: 5e617e90ac28ce7488be6a63235b1f32, type: 3}
   m_PrefabInstance: {fileID: 1647413874}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1647879920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1500423437492542605, guid: 387f15a767d823f4e8475d5fed8358f3, type: 3}
+  m_PrefabInstance: {fileID: 218169306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1685233876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6259,7 +6271,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3027336291122806203, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
   m_PrefabInstance: {fileID: 344369612}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 545344458}
+  m_GameObject: {fileID: 1091293165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 358aaeafa71b271428ae206817746823, type: 3}
@@ -6946,6 +6958,7 @@ GameObject:
   - component: {fileID: 1985241306}
   - component: {fileID: 1985241305}
   - component: {fileID: 1985241307}
+  - component: {fileID: 1985241308}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -7110,6 +7123,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   splashParticle: {fileID: 0}
   BoardRigidbody: {fileID: 1985241306}
+--- !u!114 &1985241308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985241300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894f5d33d40a054479c39f534cc8d85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 1647879920}
+  windZone: {fileID: 1091293165}
+  rotationLimit: 45
 --- !u!1001 &2003480423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7489,6 +7517,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3116888419821178666, guid: ff6a99ea9701734449c52199117cfe4f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4033995352585815326, guid: ff6a99ea9701734449c52199117cfe4f, type: 3}
       propertyPath: m_Name
       value: WeightController
@@ -7615,9 +7647,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 1836779136}
     m_Modifications:
     - target: {fileID: 239911042641175523, guid: d04091843f2f4cb4d8e9f1fa0fe49e28, type: 3}
+      propertyPath: windZone
+      value: 
+      objectReference: {fileID: 1091293165}
+    - target: {fileID: 239911042641175523, guid: d04091843f2f4cb4d8e9f1fa0fe49e28, type: 3}
       propertyPath: textComponent
       value: 
-      objectReference: {fileID: 265422265}
+      objectReference: {fileID: 1647879920}
     - target: {fileID: 4251210308779641666, guid: d04091843f2f4cb4d8e9f1fa0fe49e28, type: 3}
       propertyPath: m_Name
       value: SceneManager

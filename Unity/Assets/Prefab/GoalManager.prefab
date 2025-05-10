@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6801337898122365925}
   - component: {fileID: 3726235332361156160}
+  - component: {fileID: 8240292711307153061}
   m_Layer: 0
   m_Name: GoalCollider
   m_TagString: Goal
@@ -47,12 +48,26 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8240292711307153061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738203105661735301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796c43380c7ebb241b592ab277dc1d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goalParticle: {fileID: 3425026211840218638, guid: a3de420bf5fe4f349838f2d14b6d5ebc, type: 3}
+  timeController: {fileID: 0}
 --- !u!1 &6403497137593383000
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 98.50122
+      value: 90.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
       propertyPath: m_LocalPosition.y
@@ -116,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.5298615
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
       propertyPath: m_LocalRotation.w
@@ -160,7 +175,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5728730636163794801}
+      addedObject: {fileID: 1656529639752811813}
   m_SourcePrefab: {fileID: 100100000, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
 --- !u!4 &529014068665216642 stripped
 Transform:
@@ -172,7 +187,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c288b62dae91604eb1d6ede55703c90, type: 3}
   m_PrefabInstance: {fileID: 62441279925258601}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5728730636163794801
+--- !u!114 &1656529639752811813
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,4 +199,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3962593813bea4d95d5fc52e0a8caa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 100
+  rotationSpeed: 30

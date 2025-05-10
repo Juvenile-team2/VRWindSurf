@@ -14,7 +14,7 @@ public class SailController : MonoBehaviour
         currentRotation += rotationInput * rotationSpeed * Time.deltaTime;
 
         // ‰ñ“]§ŒÀ‚ğİ’è
-        currentRotation = Mathf.Clamp(currentRotation, -80f, 80f);
+        currentRotation = Mathf.Clamp(currentRotation, -180f, 180f);
         //currentRotation = Mathf.Clamp(currentRotation, 10f, 170f);
 
         // ”¿‚ğ‰ñ“]‚³‚¹‚é

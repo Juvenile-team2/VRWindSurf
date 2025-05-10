@@ -19,7 +19,8 @@ public class WindMove : MonoBehaviour
     private float arrowZ = 0f;
 
     // ?????g???W?????R???W??
-    private float maxLiftCoefficient = 1.2f;
+    [SerializeField]
+    private float maxLiftCoefficient = 1.5f;
     private float baseDragCoefficient = 0.05f;
     private float dragIncreaseRate = 0.1f;
 
@@ -48,6 +49,8 @@ public class WindMove : MonoBehaviour
 
     public bool windRandomSwitch = true;
 
+
+
     private void Start()
     {
         if (windRandomSwitch)
@@ -69,6 +72,9 @@ public class WindMove : MonoBehaviour
             // ????Transform??????
 
             Transform sailTransform = other.transform;
+
+            Vector3 sailRight = sailTransform.right;
+            Vector3 sailForward = sailTransform.forward;
 
             //帆の向きの修正
             //Quaternion rotated = Quaternion.Euler(90f, 0f, 0f) * sailTransform.rotation;
@@ -92,45 +98,53 @@ public class WindMove : MonoBehaviour
                     windDirection = CalculateWindDirection(windX, windY, windZ);
                 }
 
-                Vector3 sailDirection;
+                Vector3 sailDirection = sailTransform.up;
 
-                // x???????W?????A?????????????? 
-                if (sailTransform.rotation.y < 0f)
+                // 帆の回転rotationはzが上向き
+                /*if (sailTransform.rotation.z < 0f)
                 {
-                    sailDirection = sailTransform.right;
+                    sailDirection = sailTransform.up;
                 }
                 else
                 {
-                    sailDirection = -sailTransform.right;
-                }
+                    sailDirection = -sailTransform.up;
+                }*/
 
-                //Vector3 sailDirection = rotated * Vector3.right;
+                //仰角(正負あり)
+                float signedAngle = Vector3.SignedAngle(sailDirection, windDirection, Vector3.up);
 
-                // ???p?i?????????p?x?j???v?Z
+                //仰角(正負なし)
                 float angleOfAttack = CalculateAngleOfAttack(windDirection, sailDirection);
 
-                // ?g???W?????R???W?????v?Z
+                Vector3 windAffection = CalculateWindAffection(windSpeed, windDirection, angleOfAttack);
+
+                // 揚力と抗力係数を計算
                 float liftCoefficient = CalculateLiftCoefficient(angleOfAttack);
                 //float dragCoefficient = CalculateDragCoefficient(liftCoefficient);
-
-                Vector3 liftdirection = CalculateLiftdirection(windDirection, sailDirection);
+                
+                //揚力の方向を計算
+                Vector3 liftDirection = CalculateLiftDirection(windDirection, sailRight, signedAngle);
 
                 // 揚力と抗力を計算
-                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, sailDirection, rb, liftCoefficient);
-                //Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, parentRigidbody, dragCoefficient);
+                Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, liftDirection, rb, liftCoefficient);
+                Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, sailDirection);
 
-                // ???i?????v?Z
-                Vector3 thrustForce = CalculateThrustForce(liftForce, angleOfAttack);
+                // 推進力を計算
+                Vector3 thrustForce = CalculateThrustForce(liftForce, dragForce, windAffection);
 
                 ////ボードの向きを修正
                 //Quaternion newRotation = Quaternion.LookRotation(liftdirection * Mathf.Sin(angleOfAttack), Vector3.up);
                 //boardtf.rotation = newRotation;
 
-                Quaternion lookRotation = Quaternion.LookRotation(thrustForce.normalized);
+                //推進力の方向表示
+                Quaternion lookRotation = Quaternion.LookRotation(thrustForce);
 
                 Quaternion correction = Quaternion.Euler(arrowX, arrowY, arrowZ);
 
                 arrowtf.rotation = lookRotation * correction;
+
+                //矢印がくるってた時用の向きチェック
+                //Debug.DrawRay(rb.position, liftDirection * 3f, Color.green);
 
                 // 親オブジェクト（船）に力を適用
                 rb.AddForce(thrustForce, ForceMode.Acceleration);
@@ -139,18 +153,24 @@ public class WindMove : MonoBehaviour
         }
     }
 
-    // ???????????v?Z
+    // 風の強さ
     float CalculateWindSpeed(float windx, float windy, float windz)
     {
         return Mathf.Sqrt(windx * windx + windy * windy + windz * windz);
     }
 
-    // ???????????v?Z
+    // 風向き
     Vector3 CalculateWindDirection(float windx, float windy, float windz)
     {
         float windSpeed = CalculateWindSpeed(windx, windy, windz);
         if (windSpeed == 0) return Vector3.zero;
         return new Vector3(windx / windSpeed, windy / windSpeed, windz / windSpeed);
+    }
+
+    //風の影響
+    Vector3 CalculateWindAffection(float windSpeed, Vector3 windDirection, float angleOfAttack)
+    {
+        return windSpeed * windDirection * angleOfAttack;
     }
 
     // 風と帆の向きの仰角
@@ -159,64 +179,65 @@ public class WindMove : MonoBehaviour
         return Vector3.Angle(windDirection, sailDirection) * Mathf.Deg2Rad;
     }
 
-    // ?g???W?????v?Z
+    // 揚力係数
     float CalculateLiftCoefficient(float angleOfAttack)
     {
         return maxLiftCoefficient * Mathf.Sin(2 * angleOfAttack);
     }
 
-    // ?R???W?????v?Z
+    // 抗力係数
     float CalculateDragCoefficient(float liftCoefficient)
     {
         return baseDragCoefficient + dragIncreaseRate * liftCoefficient * liftCoefficient;
     }
 
-    Vector3 CalculateLiftdirection(Vector3 windDirecction, Vector3 sailDirection)
+    Vector3 CalculateLiftDirection(Vector3 windDirection, Vector3 sailDirection, float signedAngle)
     {
 
-        // 帆の方向に対して垂直な揚力の方向を計算
-        Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
+        //揚力は常に風と垂直な方向にある
+        Vector3 liftDirection;
 
-        // Y方向の揚力を無視（XZ平面に限定）
-        //liftDirection.y = 0;
+        //仰角の正負で揚力の向きを変える
+        if (signedAngle > 0)
+        {
+            liftDirection = Vector3.Cross(windDirection, Vector3.up);
+        }
+        else
+        {
+            liftDirection = -Vector3.Cross(windDirection, Vector3.up);
+        }
 
         return liftDirection;
     }
 
     // 揚力を計算
-    Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 sailDirection, Rigidbody rigidbody, float liftCoefficient)
+    Vector3 CalculateLiftForce(float windSpeed, Vector3 windDirection, Vector3 liftDirection, Rigidbody rigidbody, float liftCoefficient)
     {
-
-        // 揚力の向き
-        //Vector3 liftDirection = Vector3.Cross(sailDirection, Vector3.up).normalized;
-        // Y方向の揚力を無視（XZ平面に限定）
-        //liftDirection.y = 0;
-
-        // ?g?????????????v?Z
+        //揚力の大きさ
         float liftForceMagnitude = 0.5f * windSpeed * windSpeed * liftCoefficient * airDensity * rigidbody.mass;
 
-        // ?g???x?N?g????????
-        //return liftForceMagnitude * -liftDirection;
-        return liftForceMagnitude * sailDirection;
+        return liftForceMagnitude * liftDirection;
     }
 
-    // ?R?????v?Z
-    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Rigidbody rigidbody, float dragCoefficient)
+    // 風と反対方向の力
+    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Vector3 sailAngle)
     {
-        float dragForceMagnitude = 0.5f * windSpeed * windSpeed * dragCoefficient * airDensity * rigidbody.mass;
-        Vector3 dragForce = dragForceMagnitude * windDirection; // ????????????
+        Vector3 dragDirection = -windDirection;
 
-        // Y???????R?????????iXZ???????????j
-        dragForce.y = 0;
+        float Angle = Vector3.Angle(sailAngle, windDirection) * Mathf.Deg2Rad;
+        Debug.Log("Angle :" + Angle);
+
+        //風と帆の間の角度が小さくなるほど大きくなる、もう少し大きくしなければいけないかも
+        Vector3 dragForce = dragDirection * Mathf.Abs(Mathf.Cos(Angle)) * 10;
 
         return dragForce;
     }
 
-    // ???i?????v?Z
-    Vector3 CalculateThrustForce(Vector3 lift, float angleOfAttack)
+    // 推進力を計算
+    Vector3 CalculateThrustForce(Vector3 liftForce, Vector3 dragForce, Vector3 windAffection)
     {
 
-        Vector3 thrustForce = lift * Mathf.Sin(angleOfAttack);
+        Vector3 thrustForce = liftForce + dragForce + windAffection;
 
         return thrustForce;
     }

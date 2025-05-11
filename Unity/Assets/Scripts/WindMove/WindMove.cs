@@ -19,8 +19,7 @@ public class WindMove : MonoBehaviour
     private float arrowZ = 0f;
 
     // ?????g???W?????R???W??
-    [SerializeField]
-    private float maxLiftCoefficient = 1.5f;
+    private float maxLiftCoefficient = 1.2f;
     private float baseDragCoefficient = 0.05f;
     private float dragIncreaseRate = 0.1f;
 

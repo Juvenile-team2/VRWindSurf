@@ -12,19 +12,24 @@ public class TimeController : MonoBehaviour
     [SerializeField] private TMP_Text countDownText;
     [SerializeField] private TMP_Text descriptionText;
     private bool isCleared = false;
-    // クリア時間
-    private float elapsedTime = 0f; 
+    private float elapsedTime = 0f;
+    private Coroutine countDownCoroutine;
 
     void Start()
     {
         elapsedTime = countDownTime;
-        StartCoroutine(CountDown());
+        countDownCoroutine = StartCoroutine(CountDown());
     }
-
 
     public void SetCleared()
     {
         isCleared = true;
+        Debug.Log("クリアフラグ受け取り");
+        if (countDownCoroutine != null)
+        {
+            StopCoroutine(countDownCoroutine);
+        }
+        StartCoroutine(ShowResult());
     }
 
     IEnumerator CountDown()
@@ -36,19 +41,24 @@ public class TimeController : MonoBehaviour
             countDownText.text = countDownTime.ToString();
         }
 
-        // 結果表示パート
-        countDownText.text = "";
+        if (!isCleared)
+        {
+            StartCoroutine(ShowResult());
+        }
+    }
+
+    IEnumerator ShowResult()
+    {
         countDownPanel.SetActive(false);
         resultPanel.SetActive(true);
+
         if (isCleared)
         {
-            countDownText.text = "";
             string timeStr = FormatTime(elapsedTime - countDownTime);
             descriptionText.text = "おめでとう！ゴールに到達しました！\nクリアタイム: " + timeStr;
         }
         else
         {
-            countDownText.text = "";
             descriptionText.text = "ナイスチャレンジ！\n最後までプレイしてくれてありがとう！";
         }
 
@@ -60,6 +70,6 @@ public class TimeController : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(timeInSeconds / 60f);
         int seconds = Mathf.FloorToInt(timeInSeconds % 60f);
-        return string.Format("{00:00}:{1:00}", minutes, seconds);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

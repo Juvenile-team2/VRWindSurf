@@ -27605,6 +27605,7 @@ GameObject:
   - component: {fileID: 1985241306}
   - component: {fileID: 1985241305}
   - component: {fileID: 1985241307}
+  - component: {fileID: 1985241308}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -27770,6 +27771,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   splashParticle: {fileID: 0}
   BoardRigidbody: {fileID: 1985241306}
+--- !u!114 &1985241308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985241300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894f5d33d40a054479c39f534cc8d85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 265422265}
+  windZone: {fileID: 545344458}
+  rotationLimit: 30
 --- !u!1 &1990327759
 GameObject:
   m_ObjectHideFlags: 0

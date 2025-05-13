@@ -225,7 +225,7 @@ public class WindMove : MonoBehaviour
         Vector3 dragDirection = -windDirection;
 
         float Angle = Vector3.Angle(sailAngle, windDirection) * Mathf.Deg2Rad;
-        Debug.Log("Angle :" + Angle);
+        //Debug.Log("Angle :" + Angle);
 
         //風と帆の間の角度が小さくなるほど大きくなる、もう少し大きくしなければいけないかも
         Vector3 dragForce = dragDirection * Mathf.Abs(Mathf.Cos(Angle)) * 10;

@@ -14,7 +14,7 @@ public class BoardSpeed : MonoBehaviour
         float speed = rb.linearVelocity.magnitude;
         if (speedText != null)
         {
-            speedText.text = $"Speed: {speed:F2} m/s";
+            speedText.text = $"Speed: {4 * (int)speed} km/h";
         }
     }
 

@@ -1,21 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
+// using TMPro; // TextMeshPro „Çí‰ΩøÁî®„Åó„Å¶„ÅÑ„ÇãÂ†¥Âêà„ÅØ„Åì„Å°„Çâ„ÇíÊúâÂäπ„Å´
+
 using System.Collections;
 using TMPro;
 
 public class FallPrevention : MonoBehaviour
 {
+    [Header("UI Settings")]
     [SerializeField]
     private TMP_Text textComponent;
+    // [SerializeField]
+    // private Text textComponent;
+
+    [Header("Object Settings")]
     [SerializeField]
     private GameObject windZone;
+
+    [Header("Reset Conditions")]
     [SerializeField]
     private float rotationLimit = 60f;
+    [SerializeField]
+    private float angularVelocityLimitY = 10f;
+    [SerializeField]
+    private float requiredHoldTime = 3f;
+
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+    private Rigidbody rb;
     private float keyHoldTime = 0f;
-    private float requiredHoldTime = 3f;
     private bool isResetting = false;
     private Coroutine resetCoroutine = null;
 
@@ -23,27 +37,42 @@ public class FallPrevention : MonoBehaviour
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogWarning("Rigidbody„Ç≥„É≥„Éù„Éº„Éç„É≥„Éà„ÅåË¶ã„Å§„Åã„Çä„Åæ„Åõ„Çì„ÄÇÊÖ£ÊÄß„ÅÆ„É™„Çª„ÉÉ„Éà„ÇÑËßíÈÄüÂ∫¶„Å´„Çà„Çã„É™„Çª„ÉÉ„Éà„ÅØË°å„Çè„Çå„Åæ„Åõ„Çì„ÄÇ", this.gameObject);
+        }
     }
 
     void Update()
     {
-        if (isResetting) return; // ÉäÉZÉbÉgíÜÇÕèàóùÇÉXÉLÉbÉv
+        if (isResetting) return;
+
+        if (rb != null)
+        {
+            float currentYAngularVelocity = rb.angularVelocity.y;
+            if (Mathf.Abs(currentYAngularVelocity) > angularVelocityLimitY)
+            {
+                Debug.Log($"YËª∏Âë®„Çä„ÅÆËßíÈÄüÂ∫¶ ({currentYAngularVelocity:F2} rad/s) „ÅåÈñæÂÄ§ ({angularVelocityLimitY} rad/s) „ÇíË∂Ö„Åà„Åæ„Åó„Åü„ÄÇ„É™„Çª„ÉÉ„Éà„Åó„Åæ„Åô„ÄÇ");
+                ResetTransformAndInertia(0f);
+                return;
+            }
+        }
 
         Vector3 currentRotation = transform.rotation.eulerAngles;
         float xRotation = NormalizeAngle(currentRotation.x);
         float zRotation = NormalizeAngle(currentRotation.z);
 
-        // äpìxêßå¿É`ÉFÉbÉN, rotationLimità»è„Ç»ÇÁÉäÉZÉbÉgî≠ìÆ
         if (Mathf.Abs(xRotation) > rotationLimit || Mathf.Abs(zRotation) > rotationLimit)
         {
-            ResetPosition(0f);
+            Debug.Log($"ÂõûËª¢ËßíÂ∫¶ ({xRotation:F1}, {currentRotation.y:F1}, {zRotation:F1}) „ÅåÂà∂ÈôêÂÄ§ ({rotationLimit}) „ÇíË∂Ö„Åà„Åæ„Åó„Åü„ÄÇ„É™„Çª„ÉÉ„Éà„Åó„Åæ„Åô„ÄÇ");
+            ResetTransformAndInertia(0f);
             return;
         }
 
         HandlePKeyInput();
     }
 
-    //PÉLÅ[ì¸óÕÇ≈à íuÉäÉZÉbÉg
     private void HandlePKeyInput()
     {
         if (Input.GetKey(KeyCode.P))
@@ -53,7 +82,7 @@ public class FallPrevention : MonoBehaviour
 
             if (keyHoldTime >= requiredHoldTime)
             {
-                ResetPosition(3f);
+                ResetTransformAndInertia(3f);
                 keyHoldTime = 0f;
             }
         }
@@ -67,7 +96,7 @@ public class FallPrevention : MonoBehaviour
         }
     }
 
-    private void ResetPosition(float delay)
+    private void ResetTransformAndInertia(float delay)
     {
         if (isResetting) return;
 
@@ -75,15 +104,14 @@ public class FallPrevention : MonoBehaviour
         {
             StopCoroutine(resetCoroutine);
         }
-
-        resetCoroutine = StartCoroutine(ResetPositionRoutine(delay));
+        resetCoroutine = StartCoroutine(ResetTransformAndInertiaRoutine(delay));
     }
 
     private void UpdateHoldTimeText()
     {
         if (textComponent == null) return;
-        float remainingTime = requiredHoldTime - keyHoldTime;
-        textComponent.text = $"à íuÉäÉZÉbÉgÇ‹Ç≈: {remainingTime:F1}ïb";
+        float remainingTime = Mathf.Max(0, requiredHoldTime - keyHoldTime);
+        textComponent.text = $"‰ΩçÁΩÆ„ÉªÊÖ£ÊÄß„É™„Çª„ÉÉ„Éà„Åæ„Åß: {remainingTime:F1}Áßí";
     }
 
     private void ClearText()
@@ -94,10 +122,19 @@ public class FallPrevention : MonoBehaviour
 
     private float NormalizeAngle(float angle)
     {
-        return angle > 180f ? angle - 360f : angle;
+        angle = angle % 360;
+        if (angle > 180f)
+        {
+            angle -= 360f;
+        }
+        else if (angle < -180f)
+        {
+            angle += 360f;
+        }
+        return angle;
     }
 
-    private IEnumerator ResetPositionRoutine(float delay)
+    private IEnumerator ResetTransformAndInertiaRoutine(float delay)
     {
         isResetting = true;
 
@@ -105,10 +142,9 @@ public class FallPrevention : MonoBehaviour
         {
             if (textComponent != null)
             {
-                textComponent.text = "à íuÉäÉZÉbÉgÇäJénÇµÇ‹Ç∑";
+                textComponent.text = "‰ΩçÁΩÆ„ÉªÊÖ£ÊÄß„É™„Çª„ÉÉ„Éà„ÇíÈñãÂßã„Åó„Åæ„Åô...";
             }
 
-            // WindZoneÇñ≥å¯âª
             if (windZone != null)
             {
                 windZone.SetActive(false);
@@ -116,24 +152,31 @@ public class FallPrevention : MonoBehaviour
 
             yield return new WaitForSeconds(delay);
 
-            // íxâÑå„Ç…WindZoneÇóLå¯âª
             if (windZone != null)
             {
                 windZone.SetActive(true);
             }
         }
 
-        // à íuÉäÉZÉbÉg
         transform.position = initialPosition;
         transform.rotation = initialRotation;
 
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            // rb.ResetInertiaTensor();
+        }
+
         if (textComponent != null)
         {
-            textComponent.text = "à íuÇÉäÉZÉbÉgÇµÇ‹ÇµÇΩ";
+            textComponent.text = "‰ΩçÁΩÆ„Å®ÊÖ£ÊÄß„Çí„É™„Çª„ÉÉ„Éà„Åó„Åæ„Åó„Åü";
             yield return new WaitForSeconds(1f);
-            textComponent.text = "";
+            ClearText();
         }
-        Debug.Log("à íuÉäÉZÉbÉgÇçsÇ¢Ç‹ÇµÇΩ");
+
+        Debug.Log("‰ΩçÁΩÆ„ÄÅÂõûËª¢„ÄÅÊÖ£ÊÄß„Çí„É™„Çª„ÉÉ„Éà„Åó„Åæ„Åó„Åü„ÄÇ");
+
         isResetting = false;
         resetCoroutine = null;
     }

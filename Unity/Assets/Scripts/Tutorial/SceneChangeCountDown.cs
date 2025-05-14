@@ -15,16 +15,37 @@ public class SceneChangeCountDown : MonoBehaviour
 
     [SerializeField]
     private int countdownTime = 10;
-
     [SerializeField]
-    private string nextSceneName;
+    public  DifficultyDataSO rotationSettings;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            descriptionText.text = "あと10秒でサーフィン開始！" + "\n足元揺れるよ！気を付けて";
+            if (rotationSettings != null)
+            {
+                rotationSettings.rotationFlag = false;
+            }
+            else
+            {
+                Debug.LogWarning("Scriptableオブジェクトがありません");
+            }
 
+            descriptionText.text = "あと10秒でサーフィン開始！" + "\n足元揺れるよ！気を付けて";
+            StartCoroutine(StartCountdown());
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (rotationSettings != null)
+            {
+                rotationSettings.rotationFlag =true;
+            }
+            else
+            { 
+                Debug.LogWarning("Scriptableオブジェクトがありません"); 
+            }
+
+            descriptionText.text = "あと10秒でサーフィン開始！" + "\n足元揺れるよ！気を付けて";
             StartCoroutine(StartCountdown());
         }
     }
@@ -39,6 +60,6 @@ public class SceneChangeCountDown : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
         }
 
-        SceneManager.LoadScene(nextSceneName);
+        SceneManager.LoadScene("SurfScene 1");
     }
 }

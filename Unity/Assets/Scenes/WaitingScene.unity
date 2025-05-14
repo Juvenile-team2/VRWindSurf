@@ -3650,7 +3650,7 @@ PrefabInstance:
       objectReference: {fileID: 1091818113}
     - target: {fileID: 3027336291122806203, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3027336291122806203, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
       propertyPath: windRandomSwitch
@@ -3663,6 +3663,10 @@ PrefabInstance:
     - target: {fileID: 8652903217423752852, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
       propertyPath: m_Name
       value: WindZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652903217423752852, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8878716413910013088, guid: e21af07cdf7ee4a40bf191d663b3170f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20805,7 +20809,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 344369612}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 358aaeafa71b271428ae206817746823, type: 3}
   m_Name: 
@@ -24605,7 +24609,7 @@ MonoBehaviour:
   countdownText: {fileID: 2502830348097118348}
   descriptionText: {fileID: 4673937299865622534}
   countdownTime: 10
-  nextSceneName: SurfScene 1
+  rotationSettings: {fileID: 11400000, guid: 6d7ae5b7501b59b4f83854cc38e0f538, type: 2}
 --- !u!224 &7605780329913038650
 RectTransform:
   m_ObjectHideFlags: 0

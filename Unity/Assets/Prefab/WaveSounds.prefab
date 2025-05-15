@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8421872777278690123}
-  - component: {fileID: 2973337056901370630}
+  - component: {fileID: 1155406520490169344}
+  - component: {fileID: 7839889554654834448}
   m_Layer: 0
   m_Name: WaveSounds
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &2973337056901370630
+--- !u!82 &1155406520490169344
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +43,12 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 04c6915af12c03842af2f1bf254daf83, type: 3}
-  m_Resource: {fileID: 8300000, guid: 04c6915af12c03842af2f1bf254daf83, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -129,3 +130,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7839889554654834448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2815304025177921578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85a93c4e3b85524992f468b989041e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardSpeedController: {fileID: 0}
+  soundForSpeedRange1: {fileID: 8300000, guid: 5a332255141df514eb61b7152c4edeca, type: 3}
+  soundForSpeedRange2: {fileID: 8300000, guid: 216aa2da8b836c5459ddfea2c2cf5c35, type: 3}
+  speedThreshold1: 10
+  speedThreshold2: 15
+  loopSounds: 1

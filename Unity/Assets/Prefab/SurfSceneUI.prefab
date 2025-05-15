@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7177926817827549806}
   - component: {fileID: 7606498443227628422}
   - component: {fileID: 8520867796516927417}
+  - component: {fileID: 3667411415356627114}
   m_Layer: 0
   m_Name: SurfSceneUI
   m_TagString: Untagged
@@ -72,6 +73,22 @@ MonoBehaviour:
   isLockX: 0
   isLockY: 0
   isLockZ: 0
+--- !u!114 &3667411415356627114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292353033299287593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b731f417d6be74bb2561f008e0a392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radicalSpeedImage: {fileID: 3943393986125290269}
+  radicalSpeedNumber: {fileID: 7546307860439475996}
+  boardSpeed: {fileID: 0}
+  maxWindSpeed: 40
 --- !u!1 &815374151845688564
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +327,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864261449815369319}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 15}
+  m_LocalPosition: {x: 0, y: 0, z: 80}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -54,6 +54,7 @@ public class WeightController : MonoBehaviour
             while (socketReady)
             {
                 string message = theReader.ReadLine(); // 1行ずつ受信
+                Debug.Log("Received: " + message);
                 if (!string.IsNullOrEmpty(message))
                 {
                     if (float.TryParse(message, out float value))
@@ -93,10 +94,15 @@ public class WeightController : MonoBehaviour
         if (socketReady)
         {
             socketReady = false;
-            theReader.Close();
-            theStream.Close();
-            mySocket.Close();
-            receiveThread.Abort();
+            // スレッドが完全に終了するのを待つ
+            if (receiveThread != null && receiveThread.IsAlive)
+            {
+                receiveThread.Join(); // 安全に待機して終了
+            }
+
+            if (theReader != null) theReader.Close();
+            if (theStream != null) theStream.Close();
+            if (mySocket != null) mySocket.Close();
             Debug.Log("Socket closed.");
         }
     }

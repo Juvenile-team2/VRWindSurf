@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using Meta.XR.ImmersiveDebugger.UserInterface.Generic;
 
 public class TutrialManager : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text textComponent;
+    [SerializeField] 
+    private GameObject tutorialPanel;
     [SerializeField]
     private float waveTime = 30f;
     [SerializeField]
@@ -58,6 +61,7 @@ public class TutrialManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         Debug.Log("移動タイム開始 " + delay + " seconds");
         yield return StartCoroutine(ChangeTextWithFade("　"));
+        tutorialPanel.SetActive(false);
     }
 
     private IEnumerator ChangeTextWithFade(string newText)

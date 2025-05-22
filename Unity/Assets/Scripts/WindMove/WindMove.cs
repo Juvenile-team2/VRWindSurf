@@ -25,6 +25,9 @@ public class WindMove : MonoBehaviour
     private float dragIncreaseRate = 0.1f;
 
     [SerializeField]
+    float dragCofficient = 10f;
+
+    [SerializeField]
     private float airDensity = 1.225f;
 
     //船のrigitbody
@@ -127,7 +130,7 @@ public class WindMove : MonoBehaviour
 
                 // 揚力と抗力を計算
                 Vector3 liftForce = CalculateLiftForce(windSpeed, windDirection, liftDirection, rb, liftCoefficient);
-                Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, sailDirection);
+                Vector3 dragForce = CalculateDragForce(windSpeed, windDirection, sailDirection, dragCofficient);
 
                 // 推進力を計算
                 Vector3 thrustForce = CalculateThrustForce(liftForce, dragForce, windAffection);
@@ -220,7 +223,7 @@ public class WindMove : MonoBehaviour
     }
 
     // 風と反対方向の力
-    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Vector3 sailAngle)
+    Vector3 CalculateDragForce(float windSpeed, Vector3 windDirection, Vector3 sailAngle, float dragCofficient)
     {
         Vector3 dragDirection = -windDirection;
 
@@ -228,7 +231,7 @@ public class WindMove : MonoBehaviour
         //Debug.Log("Angle :" + Angle);
 
         //風と帆の間の角度が小さくなるほど大きくなる、もう少し大きくしなければいけないかも
-        Vector3 dragForce = dragDirection * Mathf.Abs(Mathf.Cos(Angle)) * 10;
+        Vector3 dragForce = dragDirection * Mathf.Abs(Mathf.Cos(Angle)) * dragCofficient;
 
         return dragForce;
     }

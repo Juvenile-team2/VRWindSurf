@@ -11,6 +11,9 @@ public class TimeController : MonoBehaviour
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private TMP_Text countDownText;
     [SerializeField] private TMP_Text descriptionText;
+
+    [SerializeField] private GameObject HUDPanel;
+
     private bool isCleared = false;
     private float elapsedTime = 0f;
     private Coroutine countDownCoroutine;
@@ -50,6 +53,7 @@ public class TimeController : MonoBehaviour
     IEnumerator ShowResult()
     {
         countDownPanel.SetActive(false);
+        HUDPanel.SetActive(false);
         resultPanel.SetActive(true);
 
         if (isCleared)

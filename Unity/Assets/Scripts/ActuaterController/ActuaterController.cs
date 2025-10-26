@@ -18,11 +18,12 @@ public class ActuatorController : MonoBehaviour
     public String messageToSend = "0";
     public float sendInterval = 1f / 60f;  // 60fpsで送信
     private float previousZAngle = 0f;      // 前回のZ角度
+    public bool isZAngle = true;
 
     void Start()
     {
         setupSocket();
-        previousZAngle = GetZAngle();  // 初期角度取得
+        previousZAngle = GetAngle();  // 初期角度取得
         InvokeRepeating("SendMessage", 0f, sendInterval);
     }
 
@@ -33,7 +34,7 @@ public class ActuatorController : MonoBehaviour
             try
             {
                 // 現在のZ軸回転取得
-                float currentZAngle = GetZAngle();
+                float currentZAngle = GetAngle();
 
                 // 差分計算（-180〜180度範囲内での差）
                 float angleDiff = Mathf.DeltaAngle(previousZAngle, currentZAngle);
@@ -58,9 +59,16 @@ public class ActuatorController : MonoBehaviour
         //}
     }
 
-    float GetZAngle()
+    float GetAngle()
     {
-        return targetObject.transform.eulerAngles.z;
+        if (isZAngle)
+        {
+            return targetObject.transform.eulerAngles.z;
+        }
+        else
+        {
+            return targetObject.transform.eulerAngles.x;
+        }
     }
 
     public void setupSocket()

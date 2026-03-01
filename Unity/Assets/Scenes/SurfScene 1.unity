@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!20 &157983957 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 2410491129027899493, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
-  m_PrefabInstance: {fileID: 8715402085450300231}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &421345654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4134064209023319190, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
@@ -426,6 +421,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2093778664754335673, guid: 92c55ee2810ff4047bfa14a0e5e61799, type: 3}
+      propertyPath: baseAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2093778664754335673, guid: 92c55ee2810ff4047bfa14a0e5e61799, type: 3}
       propertyPath: noiseDirection.x
       value: 3
       objectReference: {fileID: 0}
@@ -637,6 +636,10 @@ PrefabInstance:
       propertyPath: boardSpeed
       value: 
       objectReference: {fileID: 1497051994}
+    - target: {fileID: 6272751202719572558, guid: 48be89e889fc94e41874c33b41d447ee, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 8715402085450300232}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -880,7 +883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4863412176802614874, guid: f4f56f1fef74f2a4fb150e0c430fb33b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6178580601180351079, guid: f4f56f1fef74f2a4fb150e0c430fb33b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -921,6 +924,10 @@ PrefabInstance:
     - target: {fileID: 6178580601180351079, guid: f4f56f1fef74f2a4fb150e0c430fb33b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6784599635898654365, guid: f4f56f1fef74f2a4fb150e0c430fb33b, type: 3}
+      propertyPath: Host
+      value: 192.168.16.10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1013,6 +1020,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2056757891409062998, guid: 9c3ec39eeb382e14fa271c8d61616a69, type: 3}
+      propertyPath: Host
+      value: 192.168.16.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056757891409062998, guid: 9c3ec39eeb382e14fa271c8d61616a69, type: 3}
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1985241300}
@@ -1080,7 +1091,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8304657700082905487}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bd380541a6294ce1915e3e305c66f00, type: 3}
   m_Name: 
@@ -1187,6 +1198,10 @@ PrefabInstance:
       propertyPath: windZone
       value: 
       objectReference: {fileID: 8652903217096963928}
+    - target: {fileID: 1178481495259183099, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1676143131573048029, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1198,6 +1213,10 @@ PrefabInstance:
     - target: {fileID: 1689992296914632541, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       propertyPath: AffectDirection
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410491129027899493, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
+      propertyPath: near clip plane
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2413413711747806731, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       propertyPath: m_Enabled
@@ -1250,7 +1269,7 @@ PrefabInstance:
     - target: {fileID: 7171087489737570312, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
       value: 
-      objectReference: {fileID: 157983957}
+      objectReference: {fileID: 0}
     - target: {fileID: 7814936096013975131, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1296,13 +1315,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6505636281804886666, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4134064209023319190, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 421345656}
   m_SourcePrefab: {fileID: 100100000, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
+--- !u!20 &8715402085450300232 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2848448000169575755, guid: f7081749e318fbb47878a360bebdb4a3, type: 3}
+  m_PrefabInstance: {fileID: 8715402085450300231}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8808144531777085548
 PrefabInstance:
   m_ObjectHideFlags: 0

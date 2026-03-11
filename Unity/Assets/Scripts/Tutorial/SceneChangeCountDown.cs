@@ -45,7 +45,8 @@ public class SceneChangeCountDown : MonoBehaviour
                 Debug.LogWarning("Scriptableオブジェクトがありません"); 
             }
 
-            descriptionText.text = "あと10秒でサーフィン開始！" + "\n足元揺れるよ！気を付けて";
+            // descriptionText.text = "あと10秒でサーフィン開始！" + "\n足元揺れるよ！気を付けて";
+            descriptionText.text = "Surfing starts in 10 seconds!"+ "\nWatch your step.";
             StartCoroutine(StartCountdown());
         }
     }

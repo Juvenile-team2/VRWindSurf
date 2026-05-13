@@ -24,7 +24,7 @@ public class Waves : MonoBehaviour
     public DifficultyDataSO difficultySettings;
 
     private float startTime;
-    private float currentOverallAmplitudeMultiplier = 1f;
+    protected float currentOverallAmplitudeMultiplier = 1f;
     protected MeshFilter MeshFilter;
     protected Mesh Mesh;
 
@@ -50,7 +50,7 @@ public class Waves : MonoBehaviour
         MeshFilter.mesh = Mesh;
     }
 
-    public float GetHeight(Vector3 position)
+    public virtual float GetHeight(Vector3 position)
     {
         Vector3 localPos = transform.InverseTransformPoint(position);
 
@@ -157,11 +157,11 @@ public class Waves : MonoBehaviour
                 float zBasedAmplitudeScale = 0f;
                 if (Dimension > 0)
                 {
-                    if (scaleZSmallToLarge) // true: Z‚ª¬‚³‚¢‚Ù‚Ç”g‚ª‘å‚«‚¢
+                    if (scaleZSmallToLarge) // true: Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù‚Ç”gï¿½ï¿½ï¿½å‚«ï¿½ï¿½
                     {
                         zBasedAmplitudeScale = 1.0f - (z / (float)Dimension);
                     }
-                    else // false: Z‚ª‘å‚«‚¢‚Ù‚Ç”g‚ª‘å‚«‚¢
+                    else // false: Zï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½Ù‚Ç”gï¿½ï¿½ï¿½å‚«ï¿½ï¿½
                     {
                         zBasedAmplitudeScale = z / (float)Dimension;
                     }
@@ -175,8 +175,8 @@ public class Waves : MonoBehaviour
                 float baseWave = currentBaseAmplitude * Mathf.Sin((x * baseFrequency + timeOffset) * Mathf.PI / Dimension);
 
                 float currentNoiseAmplitude = noiseAmplitude * zBasedAmplitudeScale * currentOverallAmplitudeMultiplier;
-                float noiseX = (x + noiseTimeOffset * noiseDirection.x) * noiseScale / Dimension;
-                float noiseZ = (z + noiseTimeOffset * noiseDirection.y) * noiseScale / Dimension;
+                float noiseX = (x + noiseTimeOffset * noiseDirection.x) * noiseScale / Dimension + 0.5f;
+                float noiseZ = (z + noiseTimeOffset * noiseDirection.y) * noiseScale / Dimension + 0.5f;
                 float noise = (Mathf.PerlinNoise(noiseX, noiseZ) * 2f - 1f) * currentNoiseAmplitude;
 
                 Vector3 originalVertex = new Vector3(x, 0, z);

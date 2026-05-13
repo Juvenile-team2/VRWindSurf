@@ -37,12 +37,17 @@ public class WaterFloat : MonoBehaviour
         Waves = FindObjectOfType<Waves>();
         Rigidbody = GetComponent<Rigidbody>();
         Rigidbody.useGravity = false;
+        Rigidbody.sleepThreshold = 0f;
 
         //compute center
         WaterLinePoints = new Vector3[FloatPoints.Length];
         for (int i = 0; i < FloatPoints.Length; i++)
             WaterLinePoints[i] = FloatPoints[i].position;
         centerOffset = PhysicsHelper.GetCenter(WaterLinePoints) - transform.position;
+
+        //initialize WaterLine to actual wave height to prevent initial sinking
+        for (int i = 0; i < FloatPoints.Length; i++)
+            WaterLine += Waves.GetHeight(FloatPoints[i].position) / FloatPoints.Length;
     }
 
     // Update is called once per frame

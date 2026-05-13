@@ -10,6 +10,8 @@ public class WaterFloat : MonoBehaviour
     //public properties
     public float AirDrag = 1;
     public float WaterDrag = 10;
+    public float BuoyancyForce = 3f;
+    public float SurfaceThreshold = 0.2f;
     public bool AffectDirection = true;
     public bool AttachToSurface = false;
     public Transform[] FloatPoints;
@@ -36,7 +38,6 @@ public class WaterFloat : MonoBehaviour
         //get components
         Waves = FindObjectOfType<Waves>();
         Rigidbody = GetComponent<Rigidbody>();
-        Rigidbody.useGravity = false;
         Rigidbody.sleepThreshold = 0f;
 
         //compute center
@@ -74,26 +75,33 @@ public class WaterFloat : MonoBehaviour
         //compute up vector
         TargetUp = PhysicsHelper.GetNormal(WaterLinePoints);
 
-        //gravity
-        var gravity = Physics.gravity;
+        float submergeDepth = WaterLine - Center.y;
         Rigidbody.linearDamping = AirDrag;
-        if (WaterLine > Center.y)
+
+        if (submergeDepth > 0)
         {
             Rigidbody.linearDamping = WaterDrag;
-            //under water
             if (AttachToSurface)
             {
-                //attach to water surface
                 Rigidbody.position = new Vector3(Rigidbody.position.x, WaterLine - centerOffset.y, Rigidbody.position.z);
             }
             else
             {
-                //go up
-                gravity = AffectDirection ? TargetUp * -Physics.gravity.y : -Physics.gravity;
+                Vector3 upDir = AffectDirection ? TargetUp : Vector3.up;
+                Rigidbody.AddForce(upDir * (-Physics.gravity.y * submergeDepth * BuoyancyForce), ForceMode.Acceleration);
                 transform.Translate(Vector3.up * waterLineDelta * 0.9f);
             }
         }
-        Rigidbody.AddForce(gravity * Mathf.Clamp(Mathf.Abs(WaterLine - Center.y), 0, 1));
+        else if (submergeDepth < -SurfaceThreshold)
+        {
+            // SurfaceThreshold以上浮いたらUnityのuseGravityに任せる
+            Rigidbody.linearDamping = AirDrag;
+        }
+        else
+        {
+            // 水面チョイ上(0〜SurfaceThreshold)は波面に乗ってる扱い
+            Rigidbody.linearDamping = WaterDrag;
+        }
 
         //rotation
         if (pointUnderWater)

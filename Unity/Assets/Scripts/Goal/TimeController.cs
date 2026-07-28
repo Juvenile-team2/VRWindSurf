@@ -5,7 +5,7 @@ using TMPro;
 
 public class TimeController : MonoBehaviour
 {
-    [SerializeField] private int countDownTime = 60;
+    [SerializeField] public int countDownTime = 60;
     [SerializeField] private int resultTime = 5;
     [SerializeField] private GameObject countDownPanel;
     [SerializeField] private GameObject resultPanel;

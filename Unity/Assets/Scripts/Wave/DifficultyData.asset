@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 684c06b65dc561449b818c05cd4086cb, type: 3}
   m_Name: DifficultyData
   m_EditorClassIdentifier: 
-  targetObjectName: 
-  desiredRotation: {x: 0, y: 0, z: 0, w: 0}
-  applyRotationFlag: 0
+  rotationFlag: 0

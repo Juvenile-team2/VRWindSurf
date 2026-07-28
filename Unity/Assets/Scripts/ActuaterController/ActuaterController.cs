@@ -17,6 +17,8 @@ public class ActuatorController : MonoBehaviour
     public GameObject targetObject;  // 対象のGameObject
     public String messageToSend = "0";
     public float sendInterval = 1f / 60f;  // 60fpsで送信
+    [Range(0f, 100f)]
+    public float sendScale = 100f;          // 送信値のスケール（%）
     private float previousZAngle = 0f;      // 前回のZ角度
 
     void Start()
@@ -39,7 +41,7 @@ public class ActuatorController : MonoBehaviour
                 float angleDiff = Mathf.DeltaAngle(previousZAngle, currentZAngle);
 
                 // -50〜50 にマッピング（最大180度の時 ±50 になるようにスケーリング）
-                float mappedDiff = Mathf.Clamp(angleDiff / 3.6f, -50f, 50f) * 100;
+                float mappedDiff = Mathf.Clamp(angleDiff / 3.6f, -50f, 50f) * 100 * (sendScale / 100f);
 
                 // メッセージ送信
                 messageToSend = mappedDiff.ToString("F2");

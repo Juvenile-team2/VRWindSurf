@@ -38,7 +38,13 @@ BNO08X_I2C_ADDRESS = 0x4B  # `sudo i2cdetect -y 1` で確認したアドレス�
 
 
 def open_imu():
-    """BNO086 を初期化して返す。"""
+    """BNO086 を初期化して返す。
+
+    リセット直後にenable_featureを呼ぶと、初期化時に送られてくる
+    アドバタイズ/コマンド応答パケットの処理でadafruit_bno08x側が
+    RuntimeError("Unprocessable Batch bytes", ...) を出すことがあるため、
+    少し待ってからリトライする。
+    """
     if board is None:
         raise RuntimeError(
             "adafruit_bno08x が見つかりません。"
@@ -46,8 +52,18 @@ def open_imu():
         )
     i2c = busio.I2C(board.SCL, board.SDA)
     imu = BNO08X_I2C(i2c, address=BNO08X_I2C_ADDRESS)
-    imu.enable_feature(BNO_REPORT_ROTATION_VECTOR)
-    return imu
+    time.sleep(0.5)  # リセット直後の初期パケット処理が落ち着くのを待つ
+
+    last_error = None
+    for _ in range(5):
+        try:
+            imu.enable_feature(BNO_REPORT_ROTATION_VECTOR)
+            return imu
+        except RuntimeError as e:
+            last_error = e
+            time.sleep(0.5)
+
+    raise RuntimeError(f"BNO086の初期化に失敗しました: {last_error}")
 
 
 def read_euler_deg(imu):

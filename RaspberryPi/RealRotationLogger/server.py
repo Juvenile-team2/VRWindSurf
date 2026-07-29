@@ -44,18 +44,36 @@ BNO08X_I2C_ADDRESS = 0x4B  # `sudo i2cdetect -y 1` で確認したアドレス�
 def open_imu():
     """BNO086 を初期化して返す。
 
-    リセット直後にenable_featureを呼ぶと、初期化時に送られてくる
-    アドバタイズ/コマンド応答パケットの処理でadafruit_bno08x側が
-    RuntimeError("Unprocessable Batch bytes", ...) を出すことがあるため、
-    少し待ってからリトライする。
+    - I2Cバスがビジー/センサーが直前のプロセスの通信途中で止まっている場合、
+      デバイス検出時点で TimeoutError / ValueError("No I2C device at address")
+      になることがあるため、生成自体もリトライする。
+    - 検出できても、リセット直後にenable_featureを呼ぶと初期化時に送られてくる
+      アドバタイズ/コマンド応答パケットの処理でadafruit_bno08x側が
+      RuntimeError("Unprocessable Batch bytes", ...) を出すことがあるため、
+      少し待ってからリトライする。
     """
     if board is None:
         raise RuntimeError(
             "adafruit_bno08x が見つかりません。"
             "`pip install adafruit-blinka adafruit-circuitpython-bno08x` を実行してください。"
         )
+
     i2c = busio.I2C(board.SCL, board.SDA)
-    imu = BNO08X_I2C(i2c, address=BNO08X_I2C_ADDRESS)
+
+    last_error = None
+    for _ in range(5):
+        try:
+            imu = BNO08X_I2C(i2c, address=BNO08X_I2C_ADDRESS)
+            break
+        except (TimeoutError, ValueError, OSError) as e:
+            last_error = e
+            time.sleep(1.0)
+    else:
+        raise RuntimeError(
+            f"BNO086が見つかりません（I2Cバスのタイムアウト）。"
+            f"センサーの電源を入れ直してから再実行してください: {last_error}"
+        )
+
     time.sleep(0.5)  # リセット直後の初期パケット処理が落ち着くのを待つ
 
     last_error = None

@@ -34,6 +34,10 @@ try:
 except ImportError:
     board = None
 
+HOST = "0.0.0.0"
+PORT = 12346
+LOG_INTERVAL_SEC = 0.1  # 10Hz
+BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Result", "Log", "Cube")
 BNO08X_I2C_ADDRESS = 0x4B  # `sudo i2cdetect -y 1` で確認したアドレス（デフォルト）
 
 

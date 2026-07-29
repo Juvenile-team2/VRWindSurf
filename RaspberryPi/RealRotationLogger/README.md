@@ -68,8 +68,16 @@ python3 server.py
 5. Unity側は受け取った内容を `Assets/Jarnal/Result/Log/Cube/<セッション名>/real_rotation.csv` として保存
 6. サーバーは再び次の接続を待つ
 
+## 使用ライブラリについて
+
+SparkFun純正のQwiic Python版BNO08xパッケージはPyPIに存在しないため、I2C経由で動く
+Adafruitの`adafruit-circuitpython-bno08x`（+ Raspberry Pi上でCircuitPythonライブラリを
+動かす互換レイヤー`adafruit-blinka`）を使っている。`requirements.txt`に両方含まれている。
+
+I2CアドレスはBNO086のデフォルト`0x4B`を`server.py`内の`BNO08X_I2C_ADDRESS`に直書きしている。
+基板のジャンパで`0x4A`に変更している場合は合わせて書き換える。
+
 ## 注意点
 
 - 常駐させたい場合は`systemd`サービス化や`tmux`/`screen`での多重起動を検討する
 - Unity実行PCとRaspberry Piが同一LANにあり、ポート12346が疎通できる必要がある（ファイアウォール要確認）
-- `qwiic_bno08x`のAPI（`enable_rotation_vector`など）はライブラリのバージョンによってメソッド名が異なる場合がある。エラーが出た場合は実際のライブラリのサンプルコードと突き合わせて`server.py`内の`open_imu`/`read_euler_deg`を調整する

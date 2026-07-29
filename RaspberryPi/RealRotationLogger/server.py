@@ -16,8 +16,9 @@ Raspberry Pi 側: 実験セッションごとに IMU (BNO086) の実回転角度
      ファイルを閉じるだけでUnityへの送信は行わない。
   6. 再び次の接続を待つ。
 
-必要ライブラリ:
-  pip install sparkfun-qwiic-bno08x
+必要ライブラリ (SparkFun純正のQwiic Python版BNO08xパッケージはPyPIに存在しないため、
+I2C経由で動くAdafruitのCircuitPythonライブラリ+Blinka互換レイヤーを使う):
+  pip install adafruit-blinka adafruit-circuitpython-bno08x
 """
 
 import math
@@ -26,34 +27,32 @@ import socket
 import time
 
 try:
-    import qwiic_bno08x
+    import board
+    import busio
+    from adafruit_bno08x import BNO_REPORT_ROTATION_VECTOR
+    from adafruit_bno08x.i2c import BNO08X_I2C
 except ImportError:
-    qwiic_bno08x = None
+    board = None
 
-HOST = "0.0.0.0"
-PORT = 12346
-LOG_INTERVAL_SEC = 0.1  # 10Hz
-BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Result", "Log", "Cube")
+BNO08X_I2C_ADDRESS = 0x4B  # `sudo i2cdetect -y 1` で確認したアドレス（デフォルト）
 
 
 def open_imu():
     """BNO086 を初期化して返す。"""
-    if qwiic_bno08x is None:
+    if board is None:
         raise RuntimeError(
-            "qwiic_bno08x が見つかりません。`pip install sparkfun-qwiic-bno08x` を実行してください。"
+            "adafruit_bno08x が見つかりません。"
+            "`pip install adafruit-blinka adafruit-circuitpython-bno08x` を実行してください。"
         )
-    imu = qwiic_bno08x.QwiicBNO08x()
-    if not imu.is_connected():
-        raise RuntimeError("BNO086 が見つかりません。配線とI2Cを確認してください。")
-    imu.begin()
-    imu.enable_rotation_vector()
+    i2c = busio.I2C(board.SCL, board.SDA)
+    imu = BNO08X_I2C(i2c, address=BNO08X_I2C_ADDRESS)
+    imu.enable_feature(BNO_REPORT_ROTATION_VECTOR)
     return imu
 
 
 def read_euler_deg(imu):
-    """IMUの現在の回転をXYZ(度)で返す。ライブラリのAPI名は実機のバージョンに合わせて要調整。"""
-    imu.get_sensor_event()
-    qi, qj, qk, qreal = imu.quat_i, imu.quat_j, imu.quat_k, imu.quat_real
+    """IMUの現在の回転をXYZ(度)で返す。"""
+    qi, qj, qk, qreal = imu.quaternion
 
     sinr_cosp = 2 * (qreal * qi + qj * qk)
     cosr_cosp = 1 - 2 * (qi * qi + qj * qj)

@@ -1,0 +1,9 @@
+﻿key,value
+participantId,kondo
+conditionCode,Wave-Half_Act-66
+waveMode,Half
+actuatorScale,66
+sessionStart,2026-07-30 09:35:20
+emergencyStop,true
+emergencyStoppedAt,2026-07-30 09:36:54
+emergencyElapsedSec,93.669

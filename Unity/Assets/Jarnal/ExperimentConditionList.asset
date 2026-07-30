@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditions:
   - waveMode: 1
+    actuatorScale: 66
+  - waveMode: 2
+    actuatorScale: 0
+  - waveMode: 2
     actuatorScale: 33
   - waveMode: 0
     actuatorScale: 33
-  - waveMode: 1
-    actuatorScale: 100
   - waveMode: 0
     actuatorScale: 100
-  - waveMode: 1
-    actuatorScale: 0
+  - waveMode: 2
+    actuatorScale: 100
   - waveMode: 0
     actuatorScale: 0
-  currentIndex: 0
+  currentIndex: 4

@@ -268,6 +268,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1985241306}
     - target: {fileID: 1504674444586460258, guid: bb89f794121b7ba4b998b454efa953ef, type: 3}
+      propertyPath: windX
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504674444586460258, guid: bb89f794121b7ba4b998b454efa953ef, type: 3}
       propertyPath: arrowtf
       value: 
       objectReference: {fileID: 749010832}
@@ -769,6 +773,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1985241304}
     - target: {fileID: 58179080599055711, guid: da77dff81698c034591acc2a7e66f7aa, type: 3}
+      propertyPath: participantId
+      value: P001
+      objectReference: {fileID: 0}
+    - target: {fileID: 58179080599055711, guid: da77dff81698c034591acc2a7e66f7aa, type: 3}
       propertyPath: sessionDuration
       value: 120
       objectReference: {fileID: 0}
@@ -780,6 +788,10 @@ PrefabInstance:
       propertyPath: cameraRigTransform
       value: 
       objectReference: {fileID: 568311756}
+    - target: {fileID: 58179080599055711, guid: da77dff81698c034591acc2a7e66f7aa, type: 3}
+      propertyPath: rotationLoggerHost
+      value: 192.168.16.7
+      objectReference: {fileID: 0}
     - target: {fileID: 254087937708001102, guid: da77dff81698c034591acc2a7e66f7aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -893,7 +905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3249155968643088230, guid: 61e9dd875e4bfe0458ca72ebf36df9be, type: 3}
       propertyPath: m_Constraints
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3249155968643088230, guid: 61e9dd875e4bfe0458ca72ebf36df9be, type: 3}
       propertyPath: m_IsKinematic

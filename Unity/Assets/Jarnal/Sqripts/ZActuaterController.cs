@@ -72,7 +72,7 @@ public class ZActuatorController : MonoBehaviour
                 float angleDiff = Mathf.DeltaAngle(previousZAngle, currentZAngle);
 
                 // -50〜50 にマッピング（最大180度の時 ±50 になるようにスケーリング）
-                float mappedDiff = Mathf.Clamp(angleDiff * angleCompensation * 2 / 2.4f, -50f, 50f) * 100 * (sendScale / 100f);
+                float mappedDiff = Mathf.Clamp(angleDiff * angleCompensation * 100 / 2.4f, -500f, 500f) * (sendScale / 100f);
 
                 // メッセージ送信
                 messageToSend = mappedDiff.ToString("F2");

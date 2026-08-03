@@ -1,0 +1,9 @@
+﻿key,value
+participantId,Nakano
+conditionCode,Wave-Normal_Act-33
+waveMode,Normal
+actuatorScale,33
+sessionStart,2026-08-03 17:37:12
+emergencyStop,true
+emergencyStoppedAt,2026-08-03 17:37:19
+emergencyElapsedSec,6.823

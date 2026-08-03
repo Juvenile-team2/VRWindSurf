@@ -1,0 +1,9 @@
+﻿key,value
+participantId,Nakano
+conditionCode,Wave-Third_Act-100
+waveMode,Third
+actuatorScale,100
+sessionStart,2026-08-03 17:45:50
+emergencyStop,true
+emergencyStoppedAt,2026-08-03 17:47:23
+emergencyElapsedSec,93.231

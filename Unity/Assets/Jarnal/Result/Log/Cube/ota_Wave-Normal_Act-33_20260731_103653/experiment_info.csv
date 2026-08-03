@@ -1,0 +1,9 @@
+﻿key,value
+participantId,ota
+conditionCode,Wave-Normal_Act-33
+waveMode,Normal
+actuatorScale,33
+sessionStart,2026-07-31 10:36:53
+emergencyStop,true
+emergencyStoppedAt,2026-07-31 10:37:48
+emergencyElapsedSec,54.982

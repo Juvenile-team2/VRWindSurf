@@ -27,4 +27,4 @@ MonoBehaviour:
     actuatorScale: 100
   - waveMode: 0
     actuatorScale: 0
-  currentIndex: 7
+  currentIndex: 0

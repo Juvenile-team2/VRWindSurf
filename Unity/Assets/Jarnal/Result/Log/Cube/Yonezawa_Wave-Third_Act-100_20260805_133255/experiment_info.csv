@@ -1,0 +1,9 @@
+﻿key,value
+participantId,Yonezawa
+conditionCode,Wave-Third_Act-100
+waveMode,Third
+actuatorScale,100
+sessionStart,2026-08-05 13:32:55
+emergencyStop,true
+emergencyStoppedAt,2026-08-05 13:33:15
+emergencyElapsedSec,19.947

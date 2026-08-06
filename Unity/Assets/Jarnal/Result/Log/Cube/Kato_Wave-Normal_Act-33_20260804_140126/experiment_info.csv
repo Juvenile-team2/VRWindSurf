@@ -1,0 +1,9 @@
+﻿key,value
+participantId,Kato
+conditionCode,Wave-Normal_Act-33
+waveMode,Normal
+actuatorScale,33
+sessionStart,2026-08-04 14:01:26
+emergencyStop,true
+emergencyStoppedAt,2026-08-04 14:02:14
+emergencyElapsedSec,47.790

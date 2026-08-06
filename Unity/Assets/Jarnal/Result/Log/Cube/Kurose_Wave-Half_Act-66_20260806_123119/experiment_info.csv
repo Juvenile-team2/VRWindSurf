@@ -1,0 +1,9 @@
+﻿key,value
+participantId,Kurose
+conditionCode,Wave-Half_Act-66
+waveMode,Half
+actuatorScale,66
+sessionStart,2026-08-06 12:31:19
+emergencyStop,true
+emergencyStoppedAt,2026-08-06 12:31:34
+emergencyElapsedSec,14.693
